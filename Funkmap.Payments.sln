@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funkmap.Payments", "Funkmap.Payments\Funkmap.Payments.csproj", "{03FC5C50-257E-46DC-B921-94CDCCBFEDA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments", "Funkmap.Payments\Funkmap.Payments.csproj", "{03FC5C50-257E-46DC-B921-94CDCCBFEDA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Core", "Funkmap.Payments.Core\Funkmap.Payments.Core.csproj", "{18070893-7426-4598-8708-F91FC0D79A7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Data", "Funkmap.Payments.Data\Funkmap.Payments.Data.csproj", "{7780A529-5648-4FD3-92A6-092F621FE2AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Tests", "Funkmap.Payments.Tests\Funkmap.Payments.Tests.csproj", "{22B91859-A825-47C9-BAFA-CDFC301C232E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funkmap.Payments.PayPal", "Funkmap.Payments.PayPal\Funkmap.Payments.PayPal.csproj", "{33635625-A90A-4135-88B4-4CF605798465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{03FC5C50-257E-46DC-B921-94CDCCBFEDA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03FC5C50-257E-46DC-B921-94CDCCBFEDA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03FC5C50-257E-46DC-B921-94CDCCBFEDA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18070893-7426-4598-8708-F91FC0D79A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18070893-7426-4598-8708-F91FC0D79A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18070893-7426-4598-8708-F91FC0D79A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18070893-7426-4598-8708-F91FC0D79A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7780A529-5648-4FD3-92A6-092F621FE2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7780A529-5648-4FD3-92A6-092F621FE2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7780A529-5648-4FD3-92A6-092F621FE2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7780A529-5648-4FD3-92A6-092F621FE2AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33635625-A90A-4135-88B4-4CF605798465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33635625-A90A-4135-88B4-4CF605798465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33635625-A90A-4135-88B4-4CF605798465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33635625-A90A-4135-88B4-4CF605798465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

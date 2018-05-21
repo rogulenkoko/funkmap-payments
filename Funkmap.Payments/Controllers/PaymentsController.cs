@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Funkmap.Payments.Core.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Funkmap.Payments.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("api/payments")]
+    public class PaymentsController : Controller
     {
         // GET api/values
         [HttpGet]
