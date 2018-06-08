@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Funkmap.Payments.Core
+namespace Funkmap.Payments.Core.Models
 {
     [Flags]
     public enum OrderStatus

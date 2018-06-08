@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Funkmap.Payments.Core
+namespace Funkmap.Payments.Core.Models
 {
     public class Order
     {
@@ -15,9 +15,8 @@ namespace Funkmap.Payments.Core
 
         public DateTime UpdatedOn { get; set; }
 
-        public User CreatedBy { get; set; }
-
-        public OrderStatus OrderStatus { get; set; }
+        public string CreatorLogin { get; set; }
+        public User Creator { get; set; }
 
         public long ProductId { get; set; }
         public Product Product { get; set; }

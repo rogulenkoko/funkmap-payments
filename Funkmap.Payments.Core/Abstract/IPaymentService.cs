@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Funkmap.Payments.Core.Models;
 
 namespace Funkmap.Payments.Core.Abstract
 {
-    public interface IPaymentService
+    public interface IPaymentService<T> where T : IPaymentParameter
     {
-        bool ExecutePayment(Order order, string token);
+        bool ExecutePayment(Order order, T parameter);
     }
 }

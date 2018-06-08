@@ -12,38 +12,14 @@ using Xunit;
 
 namespace Funkmap.Payments.Tests.Product
 {
-    public class ProductRepositoryTest
+    public class ProductRepositoryTest : RepositoryTestBase
     {
-        private readonly IPaymentsUnitOfWorkFactory _unitOfWorkFactory;
-
-        public ProductRepositoryTest()
-        {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            FunkmapConfigurationProvider.Configuration = configuration;
-
-            IDbConnectionFactory connectionFactory = new DbConnectionFactory(configuration);
-            PostgreEnvironmentTool environmentTool = new PostgreEnvironmentTool(connectionFactory);
-            
-            var options = new EnvironmentToolOptions()
-            {
-                DeleteIfExists = true
-            };
-            var result = environmentTool.TryCreateProductTableIfNotExistsAsync(options).GetAwaiter().GetResult();
-            Assert.True(result);
-
-            _unitOfWorkFactory = new PaymentsUnitOfWorkFactory(connectionFactory);
-        }
-
         [Fact]
         public async Task CreateProductTest()
         {
             using (var unitOfWork = _unitOfWorkFactory.UnitOfWork())
             {
-                var product1 = new Core.Product()
+                var product1 = new Core.Models.Product()
                 {
                     Price = 100,
                     Name = "name1",
@@ -55,7 +31,7 @@ namespace Funkmap.Payments.Tests.Product
                 Assert.True(result);
                 Assert.Equal(1, product1.Id);
 
-                var product2 = new Core.Product()
+                var product2 = new Core.Models.Product()
                 {
                     Price = 100,
                     Name = "name2",
@@ -68,10 +44,11 @@ namespace Funkmap.Payments.Tests.Product
                 Assert.Equal(2, product2.Id);
 
 
-                var product3 = new Core.Product()
+                var product3 = new Core.Models.Product()
                 {
                     Price = 100,
                     Name = "name2",
+                    Description = "description21",
                     MetaDescription = "description2",
                     MetaTitle = "title2"
                 };
@@ -94,7 +71,7 @@ namespace Funkmap.Payments.Tests.Product
                     var incrementResult = await unitOfWork.ProductRepository.IncrementSellingCountAsync(product.Id);
                     Assert.True(incrementResult);
 
-                    var updatedProduct = await unitOfWork.ProductRepository.Get(product.Id);
+                    var updatedProduct = await unitOfWork.ProductRepository.GetAsync(product.Id);
                     Assert.NotNull(updatedProduct);
 
                     Assert.Equal(updatedProduct.Name, product.Name);

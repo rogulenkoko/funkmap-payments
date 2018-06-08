@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Core.Parameters;
 using PayPal.Api;
-using Order = Funkmap.Payments.Core.Order;
+using Order = Funkmap.Payments.Core.Models.Order;
 
 namespace Funkmap.Payments.PayPal
 {
-    public class PayPalPaymentService : IPaymentService
+    public class PayPalPaymentService : IPaymentService<PaypalPaymentParameter>
     {
         private readonly PayPalConfigurationProvider _configurationProvider;
 
@@ -26,8 +27,13 @@ namespace Funkmap.Payments.PayPal
             _configurationProvider = configurationProvider;
         }
 
-        public bool ExecutePayment(Order order, string token)
-        {   
+        public bool ExecutePayment(Order order, PaypalPaymentParameter parameter)
+        {
+            if (parameter == null)
+            {
+                throw new ArgumentException("Expected PaypalPaymentParameter.");
+            }
+
             var payment = new Payment()
             {
                 intent = "sale",
@@ -36,11 +42,11 @@ namespace Funkmap.Payments.PayPal
                     payment_method = "paypal",
                     //payer_info = new PayerInfo()
                     //{
-                    //    email = order.CreatedBy?.Email,
-                    //    first_name = order.CreatedBy?.Name
+                    //    email = order.Creator?.Email,
+                    //    first_name = order.Creator?.Name
                     //}
                 },
-                //experience_profile_id = ;
+                experience_profile_id = "rogulenkoko@gmail.com",
                 transactions = new List<Transaction>()
                 {
                     new Transaction()

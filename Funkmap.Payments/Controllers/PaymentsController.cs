@@ -1,42 +1,43 @@
-﻿using System.Collections.Generic;
-using Funkmap.Payments.Core.Abstract;
+﻿using System.Threading.Tasks;
+using Funkmap.Payments.Core;
+using Funkmap.Payments.Core.Models;
+using Funkmap.Payments.Core.Parameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Funkmap.Payments.Controllers
 {
-    [Route("api/payments")]
+    [Route("api/payment")]
+    [Authorize]
     public class PaymentsController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IOrderService _orderService;
+
+        public PaymentsController(IOrderService orderService)
         {
-            return new string[] { "value1", "value2" };
+            _orderService = orderService;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("paypal")]
+        public async Task<IActionResult> PayProAccount([FromBody]PaypalRequest request)
         {
-        }
+            var login = User.Identity.Name;
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var orderRequest = new OrderRequest
+            {
+                PaymentRequest = request,
+                Login = login,
+                PaymentParameter = new PaypalPaymentParameter
+                {
+                    //todo paypal parameters
+                }
+            };
+            
+            CommandResponse orderExecutionResult = await _orderService.ExecuteOrderAsync(orderRequest);
+            return Ok(orderExecutionResult);
         }
     }
+
+    
 }

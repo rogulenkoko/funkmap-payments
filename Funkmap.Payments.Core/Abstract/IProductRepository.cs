@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Core.Parameters;
 
 namespace Funkmap.Payments.Core.Abstract
@@ -25,7 +26,7 @@ namespace Funkmap.Payments.Core.Abstract
         /// </summary>
         /// <param name="id">Product id</param>
         /// <returns></returns>
-        Task<Product> Get(long id);
+        Task<Product> GetAsync(long id);
 
         /// <summary>
         /// Get filtered products

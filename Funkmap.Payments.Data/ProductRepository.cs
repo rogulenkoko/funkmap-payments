@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using Funkmap.Payments.Core;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Core.Parameters;
 
 namespace Funkmap.Payments.Data
@@ -21,8 +20,8 @@ namespace Funkmap.Payments.Data
 
         public async Task<bool> CreateAsync(Product product)
         {
-            var sqlQuery = $@"INSERT INTO ""{FunkmapDataConfigurationProvider.ProductsTableName}"" (""Name"", ""Description"", ""MetaTitle"", ""MetaDescription"", ""Price"") VALUES(@Name, @MetaTitle, @MetaDescription, @Price) RETURNING ""Id""";
-            var queryResult = await _connection.QueryAsync<int>(sqlQuery, product);
+            var sqlQuery = $@"INSERT INTO ""{FunkmapDataConfigurationProvider.ProductsTableName}"" (""Name"", ""Description"", ""MetaTitle"", ""MetaDescription"", ""Price"") VALUES(@Name, @Description, @MetaTitle, @MetaDescription, @Price) RETURNING ""Id""";
+            var queryResult = await _connection.QueryAsync<int>(sqlQuery, new {product.Name, product.Description, product.MetaTitle, product.MetaDescription, product.Price});
 
             var productId = queryResult.SingleOrDefault();
 
@@ -31,7 +30,7 @@ namespace Funkmap.Payments.Data
             return true;
         }
 
-        public async Task<Product> Get(long id)
+        public async Task<Product> GetAsync(long id)
         {
             var script = $@"SELECT * FROM {FunkmapDataConfigurationProvider.ProductsTableName} WHERE ""Id"" = @Id;";
             var queryResult = await _connection.QueryAsync<Product>(script, new { Id = id });

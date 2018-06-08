@@ -1,5 +1,5 @@
 ﻿
-namespace Funkmap.Payments.Core
+namespace Funkmap.Payments.Core.Models
 {
     public class Product
     {
