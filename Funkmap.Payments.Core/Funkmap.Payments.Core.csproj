@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Funkmap.Auth.Client" Version="1.0.1" />
+    <PackageReference Include="Funkmap.Cqrs" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>

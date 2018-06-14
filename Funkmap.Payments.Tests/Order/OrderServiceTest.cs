@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
-using Funkmap.Auth.Client;
 using Funkmap.Auth.Client.Abstract;
 using Funkmap.Auth.Contracts;
+using Funkmap.Cqrs;
 using Funkmap.Payments.Core;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Core.Events;
 using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Core.Parameters;
-using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Funkmap.Payments.Tests.Order
@@ -40,15 +39,30 @@ namespace Funkmap.Payments.Tests.Order
 
                 var userService = mock.Create<IUserService>();
 
-                var orderService = new OrderService(_unitOfWorkFactory, paymentsService, userService);
+                var eventBus = new InMemoryEventBus();
 
+                eventBus.Subscribe<ProAccountConfirmedEvent>(async @event =>
+                {
+                    await Task.Yield();
+                    Assert.Equal("rogulenkoko", @event.Login);
+                });
+
+                var orderService = new OrderService(_unitOfWorkFactory, paymentsService, new EventsFactory(), userService, eventBus);
+
+
+                var proaccountProductParameter = new ProAccountParameter()
+                {
+                    Login = "rogulenkoko",
+                    Name = "proaccount"
+                };
 
                 var order = new OrderRequest()
                 {
                     PaymentRequest = new PaypalRequest()
                     {
                         ProductId = 1,
-                        Currency = "usd"
+                        Currency = "usd",
+                        ProductParameterJson = JsonConvert.SerializeObject(proaccountProductParameter)
                     },
                     Login = _user.Login
                 }; 

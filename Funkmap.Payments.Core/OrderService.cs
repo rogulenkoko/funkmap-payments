@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Funkmap.Auth.Client.Abstract;
+using Funkmap.Cqrs.Abstract;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Core.Events;
 using Funkmap.Payments.Core.Models;
 
 namespace Funkmap.Payments.Core
@@ -10,15 +12,22 @@ namespace Funkmap.Payments.Core
     {
         private readonly IPaymentsUnitOfWorkFactory _paymentsUnitOfWorkFactory;
         private readonly IPaymentServiceFacade _paymentService;
+        private readonly IEventsFactory _eventsFactory;
         private readonly IUserService _userService;
+        private readonly IEventBus _eventBus;
+
 
         public OrderService(IPaymentsUnitOfWorkFactory paymentsUnitOfWorkFactory,
                             IPaymentServiceFacade paymentService,
-                            IUserService userService)
+                            IEventsFactory eventsFactory,
+                            IUserService userService,
+                            IEventBus eventBus)
         {
             _paymentsUnitOfWorkFactory = paymentsUnitOfWorkFactory;
             _paymentService = paymentService;
+            _eventsFactory = eventsFactory;
             _userService = userService;
+            _eventBus = eventBus;
         }
 
         public async Task<CommandResponse> ExecuteOrderAsync(OrderRequest request)
@@ -39,6 +48,7 @@ namespace Funkmap.Payments.Core
             {
                 try
                 {
+                    //Get user full information
                     var userResponse = await _userService.GetUserAsync(request.Login);
 
                     if (!userResponse.IsExists)
@@ -55,32 +65,45 @@ namespace Funkmap.Payments.Core
                         Name = bandmapUser.Name
                     };
 
+                    //Save user if not exists
                     var savedUser = await unit.UserRepository.GetAsync(user.Login);
                     if (savedUser == null)
                     {
                         await unit.UserRepository.CreateAsync(user);
                     }
 
+                    //Get requested product
                     var product = await unit.ProductRepository.GetAsync(request.PaymentRequest.ProductId);
                     if (product == null)
                     {
                         throw new InvalidOperationException($"There is no product with id {request.PaymentRequest.ProductId}.");
                     }
 
+                    if (request.PaymentRequest.ProductName != product.Name)
+                    {
+                        request.PaymentRequest.ProductName = product.Name;
+                    }
+
+                    //Create and save order
                     var order = new Order
                     {
                         CreatorLogin = user.Login,
+                        Creator = user,
                         CreatedOn = DateTime.UtcNow,
                         UpdatedOn = DateTime.UtcNow,
                         Currency = request.PaymentRequest.Currency,
                         ProductId = product.Id,
+                        Product = product,
                         OrderPrice = product.Price //todo add coupons
                     };
-                    
+
                     await unit.OrderRepository.CreateAsync(order);
                     await unit.ProductRepository.IncrementSellingCountAsync(product.Id);
 
-                    //todo publish to event bus
+                    //Notify Bandmap about the deal
+                    var @event = _eventsFactory.CreatEvent(product.Name, request.PaymentRequest.ProductParameter);
+
+                    await _eventBus.PublishAsync(@event);
 
                     var result = _paymentService.ExecutePayment(order, request.PaymentParameter);
                     if (!result)
@@ -101,15 +124,5 @@ namespace Funkmap.Payments.Core
         }
     }
 
-    public abstract class PaymentRequest
-    {
-        public long ProductId { get; set; }
 
-        public string Currency { get; set; }
-    }
-
-    public class PaypalRequest : PaymentRequest
-    {
-
-    }
 }
