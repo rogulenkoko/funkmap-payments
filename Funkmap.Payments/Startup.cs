@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using Funkmap.Payments.Core;
 using Funkmap.Payments.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PayPal;
+using PayPal.Abstract;
 
 namespace Funkmap.Payments
 {
@@ -43,6 +46,13 @@ namespace Funkmap.Payments
                 });
 
             services.AddMvc();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<PayPalService>().As<IPayPalService>().SingleInstance();
+            var paypalConfigurationProvider = new PayPalConfigurationProvider(Configuration);
+            builder.RegisterInstance(paypalConfigurationProvider).AsSelf();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

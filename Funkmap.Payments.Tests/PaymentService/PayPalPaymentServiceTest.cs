@@ -1,6 +1,6 @@
 ﻿using Funkmap.Payments.Core.Abstract;
-using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Core.Parameters;
+using Xunit;
 
 namespace Funkmap.Payments.Tests.PaymentService
 {
@@ -13,6 +13,7 @@ namespace Funkmap.Payments.Tests.PaymentService
             
         }
 
+        [Fact]
         public void ExecutePaymentTest()
         {
             var order = new Core.Models.Order()

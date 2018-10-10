@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PayPal" Version="1.9.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Funkmap.Payments.Core\Funkmap.Payments.Core.csproj" />
   </ItemGroup>
 

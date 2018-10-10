@@ -31,6 +31,7 @@
     <ProjectReference Include="..\Funkmap.Payments.Core\Funkmap.Payments.Core.csproj" />
     <ProjectReference Include="..\Funkmap.Payments.Data\Funkmap.Payments.Data.csproj" />
     <ProjectReference Include="..\Funkmap.Payments\Funkmap.Payments.csproj" />
+    <ProjectReference Include="..\PayPal\PayPal.csproj" />
   </ItemGroup>
 
   <ItemGroup>

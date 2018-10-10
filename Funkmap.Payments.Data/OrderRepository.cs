@@ -30,10 +30,10 @@ namespace Funkmap.Payments.Data
 
         public async Task<Order> GetAsync(long id)
         {
-            var script = @"SELECT * FROM ""public.order_test"" as ""order""
-                    INNER JOIN ""public.user_test"" as ""user"" on ""user"".""Login"" = ""order"".""CreatorLogin""
-                    INNER JOIN ""public.product_test"" as ""product"" on ""product"".""Id"" = ""order"".""ProductId"" 
-                    WHERE ""order"".""Id"" = @Id;";
+            var script = @"SELECT * FROM public.order_test as order
+                    INNER JOIN public.user_test as user on user.Login = order.CreatorLogin
+                    INNER JOIN public.product_test as product on product.Id = order.ProductId 
+                    WHERE order.Id = @Id;";
 
             //var script = $@"SELECT * FROM ""{FunkmapDataConfigurationProvider.OrderTableName}"" WHERE ""Id"" = @Id;";
             var queryResult = await _connection.QueryAsync<Order, User, Product, Order>(script, (o, user, product) =>

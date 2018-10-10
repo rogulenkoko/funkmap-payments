@@ -58,12 +58,6 @@ namespace Funkmap.Payments.Tests.Order
 
                 var order = new OrderRequest()
                 {
-                    PaymentRequest = new PaypalRequest()
-                    {
-                        ProductId = 1,
-                        Currency = "usd",
-                        ProductParameterJson = JsonConvert.SerializeObject(proaccountProductParameter)
-                    },
                     Login = _user.Login
                 }; 
                 Assert.ThrowsAny<ArgumentException>(() => orderService.ExecuteOrderAsync(order).GetAwaiter().GetResult());
