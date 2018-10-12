@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PayPal.Abstract;
 using PayPal.Contracts;
 
@@ -15,12 +17,12 @@ namespace Funkmap.Payments.Controllers
     public class PayPalPaymentsController : Controller
     {
         private readonly IPayPalService _payPalService;
-        private readonly IDonationRepository _donationRepository;
+        private readonly IPaymentRepository _paymentRepository;
 
-        public PayPalPaymentsController(IPayPalService payPalService, IDonationRepository donationRepository)
+        public PayPalPaymentsController(IPayPalService payPalService, IPaymentRepository paymentRepository)
         {
             _payPalService = payPalService;
-            _donationRepository = donationRepository;
+            _paymentRepository = paymentRepository;
         }
 
         [HttpPost]
@@ -39,15 +41,17 @@ namespace Funkmap.Payments.Controllers
             
             var response = await _payPalService.CreatePaymentAsync(payment);
 
-            var donation = new Donation
+            var donation = new Payment
             {
                 Currency = payment.Currency,
                 Total = payment.Total,
-                DateUtc = DateTime.UtcNow
+                DateUtc = DateTime.UtcNow,
+                ExternalId = response.Id,
+                PaymentStatus = PaymentStatus.Created
             };
 
-            await _donationRepository.CreateAsync(donation);
-            await _donationRepository.SaveAsync();
+            await _paymentRepository.CreateAsync(donation);
+            await _paymentRepository.SaveAsync();
 
             return Ok(response);
         }
@@ -57,6 +61,11 @@ namespace Funkmap.Payments.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmPayment([FromQuery]string payerId, [FromQuery]string paymentId)
         {
+            var payment = await _paymentRepository.GetPayments().Where(x => x.ExternalId == paymentId).SingleOrDefaultAsync();
+            payment.PaymentStatus = PaymentStatus.Executed;
+            _paymentRepository.Update(payment);
+            await _paymentRepository.SaveAsync();
+            //todo show success page
             return Ok();
         }
 

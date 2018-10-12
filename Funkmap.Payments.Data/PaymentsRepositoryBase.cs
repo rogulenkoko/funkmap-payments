@@ -1,22 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Funkmap.Payments.Core.Abstract;
-using Funkmap.Payments.Data.Abstract;
 
 namespace Funkmap.Payments.Data
 {
     public abstract class PaymentsRepositoryBase : IRepositoryBase
     {
-        protected readonly IPaymentsContext Context;
+        protected readonly PaymentsContext Context;
 
-        protected PaymentsRepositoryBase(IPaymentsContext context)
+        protected PaymentsRepositoryBase(PaymentsContext context)
         {
             Context = context;
         }
 
         public Task SaveAsync()
         {
-            return Context.SaveChangesAsync();
+            return Context.SaveAsync();
         }
     }
 }

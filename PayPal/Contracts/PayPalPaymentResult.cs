@@ -2,6 +2,8 @@
 {
     public class PayPalPaymentResult
     {
-        public string PayPalRedirectUrl { get; set; }
+        public string RedirectUrl { get; set; }
+
+        public string Id { get; set; }
     }
 }

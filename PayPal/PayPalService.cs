@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PayPal.Abstract;
 using PayPal.Contracts;
+using PayPal.Exceptions;
 using PayPal.Models;
 
 namespace PayPal
@@ -27,11 +28,11 @@ namespace PayPal
             {
                 Intent = "sale",
                 Payer = new PayPalPayer() { PaymentMethod = "paypal" },
-                Transactions = new PayPalTransaction[]
+                Transactions = new []
                 {
-                    new PayPalTransaction()
+                    new PayPalTransaction
                     {
-                        Amount = new PayPalAmount()
+                        Amount = new PayPalAmount
                         {
                             Total = payment.Total,
                             Currency = payment.Currency
@@ -50,9 +51,21 @@ namespace PayPal
 
             var payPalResponse = JsonConvert.DeserializeObject<PayPalPaymentCreatedResponse>(content);
 
+            if (!String.IsNullOrWhiteSpace(payPalResponse.ErrorMessage))
+            {
+                var errorDetails = payPalResponse.ErrorDetailes?.Select(x => new PaypalExceptionErrorDetails
+                {
+                    Field = x.Field,
+                    Issue = x.Issue
+                }).ToArray();
+
+                throw new PaypalException(payPalResponse.ErrorMessage, errorDetails, payPalResponse.InformationLink);
+            }
+
             var result = new PayPalPaymentResult
             {
-                PayPalRedirectUrl = payPalResponse.Links.SingleOrDefault(x=>x.Rel == "approval_url")?.Href
+                RedirectUrl = payPalResponse.Links.SingleOrDefault(x=>x.Rel == "approval_url")?.Href,
+                Id = payPalResponse.Id,
             };
 
             return result;

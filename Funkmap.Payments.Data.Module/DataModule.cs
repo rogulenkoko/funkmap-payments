@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Autofac;
+using Funkmap.Payments.Core.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,11 @@ namespace Funkmap.Payments.Data.Module
             {
                 options.UseSqlServer(configuration["Database:Connection"]);
             });
+        }
+
+        public static void RegisterDataServices(this ContainerBuilder builder)
+        {
+            builder.RegisterType<PaymentRepository>().As<IPaymentRepository>().InstancePerLifetimeScope();
         }
     }
 }

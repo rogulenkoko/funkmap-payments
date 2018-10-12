@@ -1,22 +1,21 @@
 ﻿using System.Threading.Tasks;
-using Funkmap.Payments.Data.Abstract;
 using Funkmap.Payments.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Funkmap.Payments.Data
 {
-    public class PaymentsContext : DbContext, IPaymentsContext
+    public class PaymentsContext : DbContext
     {
         public PaymentsContext(DbContextOptions<PaymentsContext> options) : base(options)
         {
             
         }
 
-        public DbSet<DonationEntity> Donations { get; set; }
+        public DbSet<PaymentEntity> Donations { get; set; }
 
-        public Task SaveChangesAsync()
+        public async Task SaveAsync()
         {
-            throw new System.NotImplementedException();
+            await SaveChangesAsync();
         }
     }
 }

@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Funkmap.Payments.Data.Module;
 using PayPal;
-using PayPal.Abstract;
 
 namespace Funkmap.Payments
 {
@@ -52,9 +51,8 @@ namespace Funkmap.Payments
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<PayPalService>().As<IPayPalService>().SingleInstance();
-            var paypalConfigurationProvider = new PayPalConfigurationProvider(Configuration);
-            builder.RegisterInstance(paypalConfigurationProvider).AsSelf();
+            builder.RegisterPayPalServices(Configuration);
+            builder.RegisterDataServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

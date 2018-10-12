@@ -23,6 +23,7 @@ namespace PayPal
                 switch (_configuration["PayPal:Mode"])
                 {
                     case "sandbox": return "https://api.sandbox.paypal.com";
+                    case "live": return "https://api.paypal.com";
                     default: throw new ArgumentException("Invalid PayPal mode. Available sandbox and real mode.");
                 }
             }

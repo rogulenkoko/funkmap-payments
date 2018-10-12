@@ -2,9 +2,9 @@
 
 namespace Funkmap.Payments.Core.Models
 {
-    public class Donation
+    public class Payment
     {
-        public Donation()
+        public Payment()
         {
             Currency = "USD";
         }
@@ -17,5 +17,16 @@ namespace Funkmap.Payments.Core.Models
 
         public DateTime DateUtc { get; set; }
 
+        public PaymentStatus PaymentStatus { get; set; }
+
+        public string ExternalId { get; set; }
+
+    }
+
+    public enum PaymentStatus
+    {
+        Created = 1,
+        Executed = 2,
+        Canceled = 3
     }
 }
