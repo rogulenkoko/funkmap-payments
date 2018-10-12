@@ -61,6 +61,9 @@ namespace Funkmap.Payments.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmPayment([FromQuery]string payerId, [FromQuery]string paymentId)
         {
+            var execute = new PayPalExecutePayment { PayerId = payerId, PaymentId = paymentId};
+            await _payPalService.ExecutePaymentAsync(execute);
+
             var payment = await _paymentRepository.GetPayments().Where(x => x.ExternalId == paymentId).SingleOrDefaultAsync();
             payment.PaymentStatus = PaymentStatus.Executed;
             _paymentRepository.Update(payment);

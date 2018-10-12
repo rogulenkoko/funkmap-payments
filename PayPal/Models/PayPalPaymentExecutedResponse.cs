@@ -28,5 +28,15 @@ namespace PayPal.Models
 
         [JsonProperty("links")]
         public PayPalLink[] Links { get; set; }
+
+        //Error
+        [JsonProperty("name")]
+        public string ErrorName { get; set; }
+
+        [JsonProperty("message")]
+        public string ErrorMessage { get; set; }
+
+        [JsonProperty("information_link")]
+        public string InformationLink { get; set; }
     }
 }

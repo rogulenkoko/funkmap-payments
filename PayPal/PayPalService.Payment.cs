@@ -11,11 +11,11 @@ using PayPal.Models;
 
 namespace PayPal
 {
-    public class PayPalService : IPayPalService, IDisposable
+    public partial class PayPalService : IPayPalService, IDisposable
     {
         private readonly PayPalHttpClient _http;
         private string CreatePaymentUrl => "/v1/payments/payment";
-        private string ExecutePaymentUrl(string paymentId) => $"/v1/payments/{paymentId}/execute";
+        private string ExecutePaymentUrl(string paymentId) => $"/v1/payments/payment/{paymentId}/execute";
 
         public PayPalService(PayPalConfigurationProvider configurationProvider)
         {
@@ -73,7 +73,8 @@ namespace PayPal
 
         public async Task ExecutePaymentAsync(PayPalExecutePayment payment)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, ExecutePaymentUrl(payment.PaymentId));
+            var url = ExecutePaymentUrl(payment.PaymentId);
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             var executeRequest = new PayPalPaymentExecuteRequest
             {
                 PayerId = payment.PayerId
@@ -83,6 +84,11 @@ namespace PayPal
             var response = await _http.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             PayPalPaymentExecutedResponse executedPayment = JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
+
+            if (!String.IsNullOrWhiteSpace(executedPayment.ErrorName))
+            {
+                throw new PaypalException(executedPayment.ErrorMessage, null, executedPayment.InformationLink);
+            }
         }
 
         public void Dispose()
