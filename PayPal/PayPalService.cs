@@ -13,7 +13,8 @@ namespace PayPal
     public class PayPalService : IPayPalService, IDisposable
     {
         private readonly PayPalHttpClient _http;
-        private readonly string CreatePaymentUrl = "/v1/payments/payment";
+        private string CreatePaymentUrl => "/v1/payments/payment";
+        private string ExecutePaymentUrl(string paymentId) => $"/v1/payments/{paymentId}/execute";
 
         public PayPalService(PayPalConfigurationProvider configurationProvider)
         {
@@ -57,9 +58,18 @@ namespace PayPal
             return result;
         }
 
-        public async Task ExecutePaymentAsync()
+        public async Task ExecutePaymentAsync(PayPalExecutePayment payment)
         {
+            var request = new HttpRequestMessage(HttpMethod.Post, ExecutePaymentUrl(payment.PaymentId));
+            var executeRequest = new PayPalPaymentExecuteRequest
+            {
+                PayerId = payment.PayerId
+            };
+            request.Content = new StringContent(JsonConvert.SerializeObject(executeRequest), Encoding.UTF8, "application/json");
 
+            var response = await _http.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            PayPalPaymentExecutedResponse executedPayment = JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
         }
 
         public void Dispose()

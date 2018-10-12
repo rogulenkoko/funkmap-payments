@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Core.Parameters;
@@ -11,46 +10,33 @@ namespace Funkmap.Payments.Data
 {
     internal class ProductRepository : IProductRepository
     {
-        private readonly IDbConnection _connection;
 
-        public ProductRepository(IDbConnection connection)
+        public ProductRepository()
         {
-            _connection = connection;
+            
         }
 
         public async Task<bool> CreateAsync(Product product)
         {
-            var sqlQuery = $@"INSERT INTO ""{FunkmapDataConfigurationProvider.ProductsTableName}"" (""Name"", ""Description"", ""MetaTitle"", ""MetaDescription"", ""Price"") VALUES(@Name, @Description, @MetaTitle, @MetaDescription, @Price) RETURNING ""Id""";
-            var queryResult = await _connection.QueryAsync<int>(sqlQuery, new {product.Name, product.Description, product.MetaTitle, product.MetaDescription, product.Price});
-
-            var productId = queryResult.SingleOrDefault();
-
-            product.Id = productId;
-
-            return true;
+            throw new NotImplementedException();
         }
 
         public async Task<Product> GetAsync(long id)
         {
-            var script = $@"SELECT * FROM {FunkmapDataConfigurationProvider.ProductsTableName} WHERE ""Id"" = @Id;";
-            var queryResult = await _connection.QueryAsync<Product>(script, new { Id = id });
-            var product = queryResult.SingleOrDefault();
-            return product;
+            throw new NotImplementedException();
+
         }
 
         public async Task<List<Product>> GetFilteredAsync(ProductFilter filter = null)
         {
-            if (filter == null) filter = new ProductFilter();
-            var script = $@"SELECT * FROM {FunkmapDataConfigurationProvider.ProductsTableName} LIMIT @Limit OFFSET @Offset;";
-            var queryResults = await _connection.QueryAsync<Product>(script, new { Limit = filter.Take, Offset = filter.Skip});
-            return queryResults.ToList();
+            throw new NotImplementedException();
+
         }
 
         public async Task<bool> IncrementSellingCountAsync(long id)
         {
-            var incrementScript = $@"UPDATE {FunkmapDataConfigurationProvider.ProductsTableName} SET ""SellingCount""= ""SellingCount"" + 1 WHERE ""Id"" = @Id;";
-            var result = await _connection.ExecuteAsync(incrementScript, new {Id = id});
-            return result > 0;
+            throw new NotImplementedException();
+
         }
     }
 }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Funkmap.Payments.Core\Funkmap.Payments.Core.csproj" />
+    <ProjectReference Include="..\Funkmap.Payments.Data.Module\Funkmap.Payments.Data.Module.csproj" />
     <ProjectReference Include="..\PayPal\PayPal.csproj" />
   </ItemGroup>
 

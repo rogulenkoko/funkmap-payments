@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Funkmap.Payments.Core;
+using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
-using Funkmap.Payments.Core.Parameters;
 using Funkmap.Payments.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using PayPal.Abstract;
 using PayPal.Contracts;
@@ -17,10 +15,12 @@ namespace Funkmap.Payments.Controllers
     public class PayPalPaymentsController : Controller
     {
         private readonly IPayPalService _payPalService;
+        private readonly IDonationRepository _donationRepository;
 
-        public PayPalPaymentsController(IPayPalService payPalService)
+        public PayPalPaymentsController(IPayPalService payPalService, IDonationRepository donationRepository)
         {
             _payPalService = payPalService;
+            _donationRepository = donationRepository;
         }
 
         [HttpPost]
@@ -38,6 +38,17 @@ namespace Funkmap.Payments.Controllers
             };
             
             var response = await _payPalService.CreatePaymentAsync(payment);
+
+            var donation = new Donation
+            {
+                Currency = payment.Currency,
+                Total = payment.Total,
+                DateUtc = DateTime.UtcNow
+            };
+
+            await _donationRepository.CreateAsync(donation);
+            await _donationRepository.SaveAsync();
+
             return Ok(response);
         }
 

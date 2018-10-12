@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Funkmap.Payments.Data.Module;
 using PayPal;
 using PayPal.Abstract;
 
@@ -45,6 +46,7 @@ namespace Funkmap.Payments
                     };
                 });
 
+            services.AddDataServices(Configuration);
             services.AddMvc();
         }
 
