@@ -3,24 +3,23 @@ namespace Funkmap.Payments.Core.Models
 {
     public class Product
     {
-        public Product()
-        {
-            IsDeleted = false;
-        }
-
-        public int Id { get; set; }
-
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public string MetaTitle { get; set; }
-
-        public string MetaDescription { get; set; }
-
         public decimal Price { get; set; }
+        public string Currency { get; set; }
+        public SubscribtionPeriod Period { get; set; }
+        public PaymentType PaymentType { get; set; }
+        public bool HasTrial { get; set; }
+    }
 
-        public int SellingCount { get; set; }
+    public enum PaymentType
+    {
+        Subscribtion = 1,
+    }
 
-        public bool IsDeleted { get; set; }
+    public enum SubscribtionPeriod
+    {
+        Monthly = 1,
     }
 }

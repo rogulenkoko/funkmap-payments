@@ -3,7 +3,7 @@ using Funkmap.Payments.Data.Entities;
 
 namespace Funkmap.Payments.Data.Mappers
 {
-    internal static class PaymentMapper 
+    internal static class PaymentMapper
     {
         public static PaymentEntity ToEntity(this Payment source)
         {

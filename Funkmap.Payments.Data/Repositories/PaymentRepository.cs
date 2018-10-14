@@ -4,7 +4,7 @@ using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Data.Mappers;
 
-namespace Funkmap.Payments.Data
+namespace Funkmap.Payments.Data.Repositories
 {
     public class PaymentRepository : PaymentsRepositoryBase, IPaymentRepository
     {
@@ -15,19 +15,19 @@ namespace Funkmap.Payments.Data
         public async Task CreateAsync(Payment payment)
         {
             var entity = payment.ToEntity();
-            await Context.Donations.AddAsync(entity);
+            await Context.Payments.AddAsync(entity);
             payment.Id = entity.Id;
         }
 
         public void Update(Payment payment)
         {
             var entity = payment.ToEntity();
-            Context.Donations.Update(entity);
+            Context.Payments.Update(entity);
         }
 
         public IQueryable<Payment> GetPayments()
         {
-            return Context.Donations.Select(x => x.ToModel());
+            return Context.Payments.Select(x => x.ToModel());
         }
     }
 }

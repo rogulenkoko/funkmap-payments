@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,8 @@ namespace Funkmap.Payments.Data.Module
         {
             services.AddDbContext<PaymentsContext>(options =>
             {
-                options.UseSqlServer(configuration["Database:Connection"]);
+                options.UseNpgsql(configuration["Database:Connection"]);
+                //options.UseSqlServer(configuration["Database:Connection"]);
             });
         }
 

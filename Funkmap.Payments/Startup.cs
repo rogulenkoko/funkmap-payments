@@ -46,6 +46,7 @@ namespace Funkmap.Payments
                 });
 
             services.AddDataServices(Configuration);
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -62,6 +63,13 @@ namespace Funkmap.Payments
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            });
 
             app.UseMvc();
         }

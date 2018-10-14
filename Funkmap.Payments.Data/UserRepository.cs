@@ -8,7 +8,6 @@ namespace Funkmap.Payments.Data
 {
     internal class UserRepository : IUserRepository
     {
-
         public UserRepository()
         {
         }
@@ -16,19 +15,16 @@ namespace Funkmap.Payments.Data
         public async Task CreateAsync(User user)
         {
             throw new NotImplementedException();
-
         }
 
         public async Task<User> GetAsync(string login)
         {
             throw new NotImplementedException();
-
         }
 
         public async Task<bool> UpdatePaymentInfoAsync(string login, string paymentInfoJson)
         {
             throw new NotImplementedException();
-
         }
     }
 }
