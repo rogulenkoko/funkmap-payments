@@ -2,7 +2,7 @@
 
 namespace PayPal.Models.Subscription
 {
-    public class PayPalPlanCreateRequest
+    internal class PayPalPlanCreateRequest
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -14,12 +14,24 @@ namespace PayPal.Models.Subscription
         public string Type { get; set; }
     }
 
-    public class PayPalPaymentDefinition
+    internal class PayPalPaymentDefinition
     {
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("frequency")]
+        public string Frequency { get; set; }
+
+        [JsonProperty("frequency_interval")]
+        public string FrequencyInterval { get; set; }
+
+        [JsonProperty("amount")]
+        public PayPalAmount Amount { get; set; }
+
+        [JsonProperty("cycles")]
+        public string Cycles { get; set; }
     }
 }
