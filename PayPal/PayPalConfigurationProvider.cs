@@ -31,7 +31,7 @@ namespace PayPal
 
         public Dictionary<string, string> PayPalConfiguration => new Dictionary<string, string>()
         {
-            {"mode", _configuration["PayPal:Mode"] }
+            {"mode", _configuration["PayPal:Mode"]}
         };
     }
 }

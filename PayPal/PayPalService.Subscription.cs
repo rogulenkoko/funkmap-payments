@@ -14,7 +14,6 @@ namespace PayPal
 
         private async Task CreatePlanAsync()
         {
-
         }
     }
 }

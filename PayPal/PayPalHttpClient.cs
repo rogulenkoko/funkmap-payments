@@ -27,7 +27,7 @@ namespace PayPal
                 Timeout = TimeSpan.FromSeconds(30)
             };
         }
-        
+
         public async Task<PayPalToken> AuthorizeAsync()
         {
             var clientId = _configurationProvider.ClientId;
@@ -35,8 +35,10 @@ namespace PayPal
             byte[] credentials = Encoding.GetEncoding("iso-8859-1").GetBytes($"{clientId}:{secret}");
 
             var authRequest = new HttpRequestMessage(HttpMethod.Post, AuthUrl);
-            authRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(credentials));
-            authRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>() { { "grant_type", "client_credentials" } });
+            authRequest.Headers.Authorization =
+                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(credentials));
+            authRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>()
+                {{"grant_type", "client_credentials"}});
 
             var response = await _http.SendAsync(authRequest);
             var content = await response.Content.ReadAsStringAsync();

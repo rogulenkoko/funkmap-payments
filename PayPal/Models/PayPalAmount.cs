@@ -4,10 +4,8 @@ namespace PayPal.Models
 {
     internal class PayPalAmount
     {
-        [JsonProperty("total")]
-        public decimal Total { get; set; }
+        [JsonProperty("total")] public decimal Total { get; set; }
 
-        [JsonProperty("currency")]
-        public string Currency { get; set; }
+        [JsonProperty("currency")] public string Currency { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using PayPal.Abstract;
 using PayPal.Contracts;
 using PayPal.Exceptions;
 using PayPal.Models;
+using PayPal.Models.Payment;
 
 namespace PayPal
 {
@@ -27,8 +28,8 @@ namespace PayPal
             var payPalPaymentCreateRequest = new PayPalPaymentCreateRequest
             {
                 Intent = "sale",
-                Payer = new PayPalPayer() { PaymentMethod = "paypal" },
-                Transactions = new []
+                Payer = new PayPalPayer() {PaymentMethod = "paypal"},
+                Transactions = new[]
                 {
                     new PayPalTransaction
                     {
@@ -39,9 +40,10 @@ namespace PayPal
                         }
                     },
                 },
-                RedirectUrls = new PayPalRedirectUrls() { CancelUrl = payment.CancelUrl, ReturnUrl = payment.ReturnUrl }
+                RedirectUrls = new PayPalRedirectUrls() {CancelUrl = payment.CancelUrl, ReturnUrl = payment.ReturnUrl}
             };
-            var requestContent = new StringContent(JsonConvert.SerializeObject(payPalPaymentCreateRequest), Encoding.UTF8, "application/json");
+            var requestContent = new StringContent(JsonConvert.SerializeObject(payPalPaymentCreateRequest),
+                Encoding.UTF8, "application/json");
 
             var request = new HttpRequestMessage(HttpMethod.Post, CreatePaymentUrl);
             request.Content = requestContent;
@@ -64,7 +66,7 @@ namespace PayPal
 
             var result = new PayPalPaymentResult
             {
-                RedirectUrl = payPalResponse.Links.SingleOrDefault(x=>x.Rel == "approval_url")?.Href,
+                RedirectUrl = payPalResponse.Links.SingleOrDefault(x => x.Rel == "approval_url")?.Href,
                 Id = payPalResponse.Id,
             };
 
@@ -79,11 +81,13 @@ namespace PayPal
             {
                 PayerId = payment.PayerId
             };
-            request.Content = new StringContent(JsonConvert.SerializeObject(executeRequest), Encoding.UTF8, "application/json");
+            request.Content = new StringContent(JsonConvert.SerializeObject(executeRequest), Encoding.UTF8,
+                "application/json");
 
             var response = await _http.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            PayPalPaymentExecutedResponse executedPayment = JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
+            PayPalPaymentExecutedResponse executedPayment =
+                JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
 
             if (!String.IsNullOrWhiteSpace(executedPayment.ErrorName))
             {
