@@ -13,14 +13,15 @@ namespace Funkmap.Payments.Data.Module
         {
             services.AddDbContext<PaymentsContext>(options =>
             {
-                options.UseNpgsql(configuration["Database:Connection"]);
-                //options.UseSqlServer(configuration["Database:Connection"]);
+                //options.UseNpgsql(configuration["Database:Connection"]);
+                options.UseSqlServer(configuration["Database:Connection"]);
             });
         }
 
         public static void RegisterDataServices(this ContainerBuilder builder)
         {
             builder.RegisterType<PaymentRepository>().As<IPaymentRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerLifetimeScope();
         }
     }
 }

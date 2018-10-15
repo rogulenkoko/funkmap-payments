@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Funkmap.Payments.Data.Module;
+using Funkmap.Payments.Tools;
 using PayPal;
 
 namespace Funkmap.Payments
@@ -70,6 +71,16 @@ namespace Funkmap.Payments
                     .AllowAnyMethod()
                     .AllowAnyOrigin();
             });
+
+            app.Use(next =>
+            {
+                return async context =>
+                {
+                    LocaleMiddleware.Invoke(context);
+                    await next(context);
+                };
+            });
+
 
             app.UseMvc();
         }

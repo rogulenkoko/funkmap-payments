@@ -1,6 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Funkmap.Payments.Data.Migrations
 {
@@ -13,7 +13,7 @@ namespace Funkmap.Payments.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateUtc = table.Column<DateTime>(nullable: false),
                     Currency = table.Column<string>(nullable: false),
                     Total = table.Column<decimal>(nullable: false),
@@ -44,7 +44,7 @@ namespace Funkmap.Payments.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Language = table.Column<string>(nullable: true),
                     ProductName = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -71,12 +71,12 @@ namespace Funkmap.Payments.Data.Migrations
             migrationBuilder.InsertData(
                 table: "ProductLocales",
                 columns: new[] { "Id", "Currency", "Description", "Language", "Name", "ProductName", "Total" },
-                values: new object[] { 1L, "RUB", "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", "ru", "Pro-аккаунт", "pro_account", 300m });
+                values: new object[] { 1L, "RUB", "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", "ru-RU", "Pro-аккаунт", "pro_account", 300m });
 
             migrationBuilder.InsertData(
                 table: "ProductLocales",
                 columns: new[] { "Id", "Currency", "Description", "Language", "Name", "ProductName", "Total" },
-                values: new object[] { 2L, "USD", "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", "en", "Pro-account", "pro_account", 5m });
+                values: new object[] { 2L, "USD", "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", "en-US", "Pro-account", "pro_account", 5m });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductLocales_ProductName",

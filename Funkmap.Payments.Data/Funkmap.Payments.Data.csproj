@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <HintPath>C:\Users\rogul_000\.nuget\packages\microsoft.entityframeworkcore.sqlserver\2.0.3\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+      <HintPath>..\..\..\.nuget\packages\microsoft.entityframeworkcore.sqlserver\2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration\2.0.2\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
@@ -31,7 +31,7 @@
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.0.2\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql.EntityFrameworkCore.PostgreSQL">
-      <HintPath>C:\Users\rogul_000\.nuget\packages\npgsql.entityframeworkcore.postgresql\2.1.2\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
+      <HintPath>..\..\..\.nuget\packages\npgsql.entityframeworkcore.postgresql\2.1.2\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
     </Reference>
   </ItemGroup>
 

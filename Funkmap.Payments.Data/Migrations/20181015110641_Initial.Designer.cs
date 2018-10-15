@@ -3,28 +3,29 @@ using System;
 using Funkmap.Payments.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Funkmap.Payments.Data.Migrations
 {
     [DbContext(typeof(PaymentsContext))]
-    [Migration("20181014192749_Initial")]
+    [Migration("20181015110641_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Funkmap.Payments.Data.Entities.PaymentEntity", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Currency")
                         .IsRequired();
@@ -66,7 +67,8 @@ namespace Funkmap.Payments.Data.Migrations
             modelBuilder.Entity("Funkmap.Payments.Data.Entities.ProductLocaleEntity", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Currency");
 
@@ -88,8 +90,8 @@ namespace Funkmap.Payments.Data.Migrations
                     b.ToTable("ProductLocales");
 
                     b.HasData(
-                        new { Id = 1L, Currency = "RUB", Description = "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", Language = "ru", Name = "Pro-аккаунт", ProductName = "pro_account", Total = 300m },
-                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en", Name = "Pro-account", ProductName = "pro_account", Total = 5m }
+                        new { Id = 1L, Currency = "RUB", Description = "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", Language = "ru-RU", Name = "Pro-аккаунт", ProductName = "pro_account", Total = 300m },
+                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en-US", Name = "Pro-account", ProductName = "pro_account", Total = 5m }
                     );
                 });
 
