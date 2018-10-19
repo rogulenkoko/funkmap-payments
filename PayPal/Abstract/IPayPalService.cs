@@ -8,5 +8,7 @@ namespace PayPal.Abstract
         Task<PayPalPaymentResult> CreatePaymentAsync(PayPalPayment payment);
 
         Task ExecutePaymentAsync(PayPalExecutePayment payment);
+
+        Task CreatePlanAsync(PayPalPlan plan);
     }
 }

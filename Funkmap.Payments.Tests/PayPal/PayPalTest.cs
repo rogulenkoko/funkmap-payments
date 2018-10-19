@@ -11,21 +11,20 @@ namespace Funkmap.Payments.Tests.PayPal
 {
     public class PayPalTest
     { 
-        private readonly PayPalConfigurationProvider _configurationProvider;
+        private readonly IPayPalService _payPalService;
 
         public PayPalTest()
         {
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json").Build();
 
-            _configurationProvider = new PayPalConfigurationProvider(configuration);
+            var configurationProvider = new PayPalConfigurationProvider(configuration);
+            _payPalService = new PayPalService(configurationProvider);
         }
 
         [Fact]
         public async Task CreatePayment()
         {
-            IPayPalService payPal = new PayPalService(_configurationProvider);
-
             var payment = new PayPalPayment()
             {
                 Currency = "USD",
@@ -33,7 +32,29 @@ namespace Funkmap.Payments.Tests.PayPal
                 CancelUrl = "http://localhost:1230",
                 Total = 0.02m
             };
-            var response = await payPal.CreatePaymentAsync(payment);
+            var response = await _payPalService.CreatePaymentAsync(payment);
+
+            Assert.NotNull(response);
+            Assert.NotEqual(response.Id, String.Empty);
+            Assert.NotNull(response.Id);
+            Assert.NotEqual(response.RedirectUrl, String.Empty);
+            Assert.NotNull(response.RedirectUrl);
+        }
+
+        [Fact]
+        public async Task CreatePlan()
+        {
+            var plan = new PayPalPlan
+            {
+                Currency = "RUB",
+                Total = 100.00m,
+                Name = "pro_account",
+                PeriodType = PeriodType.Month,
+                Description = "Pro account description",
+                Frequency = 1
+            };
+
+            await _payPalService.CreatePlanAsync(plan);
         }
     }
 }

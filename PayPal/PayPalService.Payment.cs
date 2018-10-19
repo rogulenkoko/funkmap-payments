@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -9,6 +10,7 @@ using PayPal.Contracts;
 using PayPal.Exceptions;
 using PayPal.Models;
 using PayPal.Models.Payment;
+using PayPal.Tools;
 
 namespace PayPal
 {
@@ -35,7 +37,7 @@ namespace PayPal
                     {
                         Amount = new PayPalAmount
                         {
-                            Total = payment.Total,
+                            Total = payment.Total.ToString(CultureInfo.InvariantCulture),
                             Currency = payment.Currency
                         }
                     },
@@ -55,13 +57,7 @@ namespace PayPal
 
             if (!String.IsNullOrWhiteSpace(payPalResponse.ErrorMessage))
             {
-                var errorDetails = payPalResponse.ErrorDetailes?.Select(x => new PaypalExceptionErrorDetails
-                {
-                    Field = x.Field,
-                    Issue = x.Issue
-                }).ToArray();
-
-                throw new PaypalException(payPalResponse.ErrorMessage, errorDetails, payPalResponse.InformationLink);
+                throw new PaypalException(payPalResponse.ErrorMessage, payPalResponse.ErrorDetailes.ToModels(), payPalResponse.InformationLink);
             }
 
             var result = new PayPalPaymentResult

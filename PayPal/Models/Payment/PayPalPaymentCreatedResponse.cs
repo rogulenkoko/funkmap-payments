@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace PayPal.Models.Payment
 {
-    internal class PayPalPaymentCreatedResponse
+    internal class PayPalPaymentCreatedResponse : PayPalError
     {
         [JsonProperty("id")] public string Id { get; set; }
 
@@ -18,16 +18,5 @@ namespace PayPal.Models.Payment
         [JsonProperty("create_time")] public DateTime CreateTime { get; set; }
 
         [JsonProperty("links")] public PayPalLink[] Links { get; set; }
-
-
-        //Error
-
-        [JsonProperty("name")] public string ErrorName { get; set; }
-
-        [JsonProperty("message")] public string ErrorMessage { get; set; }
-
-        [JsonProperty("information_link")] public string InformationLink { get; set; }
-
-        [JsonProperty("details")] public PayPalErrorDetails[] ErrorDetailes { get; set; }
     }
 }
