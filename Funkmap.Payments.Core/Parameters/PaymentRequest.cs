@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Funkmap.Payments.Core
+namespace Funkmap.Payments.Core.Parameters
 {
     public abstract class PaymentRequest
     {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Funkmap.Payments.Data.Migrations
 {
     [DbContext(typeof(PaymentsContext))]
-    [Migration("20181015110641_Initial")]
+    [Migration("20181019152517_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,8 @@ namespace Funkmap.Payments.Data.Migrations
                     b.ToTable("Products");
 
                     b.HasData(
-                        new { Name = "pro_account", HasTrial = false, PaymentType = 1, Period = 1 }
+                        new { Name = "pro_account", HasTrial = false, PaymentType = 1, Period = 1 },
+                        new { Name = "priority_profile", HasTrial = false, PaymentType = 1, Period = 1 }
                     );
                 });
 
@@ -91,7 +92,9 @@ namespace Funkmap.Payments.Data.Migrations
 
                     b.HasData(
                         new { Id = 1L, Currency = "RUB", Description = "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", Language = "ru-RU", Name = "Pro-аккаунт", ProductName = "pro_account", Total = 300m },
-                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en-US", Name = "Pro-account", ProductName = "pro_account", Total = 5m }
+                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en-US", Name = "Pro-account", ProductName = "pro_account", Total = 5m },
+                        new { Id = 3L, Currency = "RUB", Description = "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.", Language = "ru-RU", Name = "Приоритетный профиль", ProductName = "priority_profile", Total = 300m },
+                        new { Id = 4L, Currency = "USD", Description = "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.", Language = "en-US", Name = "Priority profile", ProductName = "priority_profile", Total = 5m }
                     );
                 });
 

@@ -69,14 +69,20 @@ namespace Funkmap.Payments.Data.Migrations
                 values: new object[] { "pro_account", false, 1, 1 });
 
             migrationBuilder.InsertData(
-                table: "ProductLocales",
-                columns: new[] { "Id", "Currency", "Description", "Language", "Name", "ProductName", "Total" },
-                values: new object[] { 1L, "RUB", "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", "ru-RU", "Pro-аккаунт", "pro_account", 300m });
+                table: "Products",
+                columns: new[] { "Name", "HasTrial", "PaymentType", "Period" },
+                values: new object[] { "priority_profile", false, 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "ProductLocales",
                 columns: new[] { "Id", "Currency", "Description", "Language", "Name", "ProductName", "Total" },
-                values: new object[] { 2L, "USD", "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", "en-US", "Pro-account", "pro_account", 5m });
+                values: new object[,]
+                {
+                    { 1L, "RUB", "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", "ru-RU", "Pro-аккаунт", "pro_account", 300m },
+                    { 2L, "USD", "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", "en-US", "Pro-account", "pro_account", 5m },
+                    { 3L, "RUB", "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.", "ru-RU", "Приоритетный профиль", "priority_profile", 300m },
+                    { 4L, "USD", "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.", "en-US", "Priority profile", "priority_profile", 5m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductLocales_ProductName",

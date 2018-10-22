@@ -13,11 +13,20 @@ namespace Funkmap.Payments.Data.Tools
                 PaymentType = PaymentType.Subscribtion,
                 HasTrial = false,
                 Period = SubscribtionPeriod.Monthly
-            }
+            },
+            new ProductEntity
+            {
+                Name = "priority_profile",
+                PaymentType = PaymentType.Subscribtion,
+                HasTrial = false,
+                Period = SubscribtionPeriod.Monthly,
+            }, 
         };
 
         public static ProductLocaleEntity[] ProductLocales => new ProductLocaleEntity[]
         {
+            #region pro_account
+
             new ProductLocaleEntity
             {
                 Id = 1,
@@ -39,7 +48,35 @@ namespace Funkmap.Payments.Data.Tools
                 Total = 5,
                 Description =
                     "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles)."
-            }
+            },
+
+            #endregion
+
+            #region priority_profile
+
+            new ProductLocaleEntity()
+            {
+                Id = 3,
+                ProductName = "priority_profile",
+                Name = "Приоритетный профиль",
+                Description = "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.",
+                Currency = "RUB",
+                Language = "ru-RU",
+                Total = 300
+            },
+
+            new ProductLocaleEntity()
+            {
+                Id = 4,
+                ProductName = "priority_profile",
+                Name = "Priority profile",
+                Description = "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.",
+                Currency = "USD",
+                Language = "en-US",
+                Total = 5
+            }, 
+
+            #endregion
         };
     }
 }
