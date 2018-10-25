@@ -11,13 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Data", "Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Tests", "Funkmap.Payments.Tests\Funkmap.Payments.Tests.csproj", "{22B91859-A825-47C9-BAFA-CDFC301C232E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.PayPal", "Funkmap.Payments.PayPal\Funkmap.Payments.PayPal.csproj", "{33635625-A90A-4135-88B4-4CF605798465}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPal", "PayPal\PayPal.csproj", "{AA2A3977-1E96-4FBA-A7D7-705C6ECF2859}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Data.Module", "Funkmap.Payments.Data.Module\Funkmap.Payments.Data.Module.csproj", "{2F6E1A24-8312-4D71-B2B1-30E632C38C7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funkmap.Payments.Contracts", "Funkmap.Payments.Contracts\Funkmap.Payments.Contracts.csproj", "{1F7C000A-7522-4AAF-B808-6D1029AA5A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkmap.Payments.Contracts", "Funkmap.Payments.Contracts\Funkmap.Payments.Contracts.csproj", "{1F7C000A-7522-4AAF-B808-6D1029AA5A4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B91859-A825-47C9-BAFA-CDFC301C232E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33635625-A90A-4135-88B4-4CF605798465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33635625-A90A-4135-88B4-4CF605798465}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33635625-A90A-4135-88B4-4CF605798465}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33635625-A90A-4135-88B4-4CF605798465}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA2A3977-1E96-4FBA-A7D7-705C6ECF2859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA2A3977-1E96-4FBA-A7D7-705C6ECF2859}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA2A3977-1E96-4FBA-A7D7-705C6ECF2859}.Release|Any CPU.ActiveCfg = Release|Any CPU

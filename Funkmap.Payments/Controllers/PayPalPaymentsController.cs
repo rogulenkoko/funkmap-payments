@@ -18,17 +18,24 @@ namespace Funkmap.Payments.Controllers
     {
         private readonly IPayPalService _payPalService;
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IPaymentsService _paymentsService;
 
-        public PayPalPaymentsController(IPayPalService payPalService, IPaymentRepository paymentRepository)
+        public PayPalPaymentsController(IPayPalService payPalService, 
+                                        IPaymentRepository paymentRepository,
+                                        IProductRepository productRepository,
+                                        IPaymentsService paymentsService)
         {
             _payPalService = payPalService;
             _paymentRepository = paymentRepository;
+            _productRepository = productRepository;
+            _paymentsService = paymentsService;
         }
 
         [HttpPost]
         [Route("donation")]
         [AllowAnonymous]
-        public async Task<IActionResult> PayProAccount([FromBody]DonationRequest request)
+        public async Task<IActionResult> CreateDonation([FromBody]DonationRequest request)
         {
             var currentHost = $"{Request.Scheme}://{Request.Host}";
             var payment = new PayPalPayment
@@ -54,6 +61,22 @@ namespace Funkmap.Payments.Controllers
             await _paymentRepository.SaveAsync();
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("subscription")]
+        public async Task<IActionResult> CreateSubscription(string productId)
+        {
+            var product = await _productRepository.GetAsync(productId);
+            var payPlanId = await _paymentsService.GetOrCreatePayPalPlanIdAsync(productId);
+            var agreement = new PayPalAgreement
+            {
+                Name = product.Name,
+                Description = product.Description,
+                PayPalPlanId = payPlanId
+            };
+            var agreementResponse = await _payPalService.CreateAgreementAsync(agreement);
+            return Ok(agreementResponse);
         }
 
         [HttpGet]

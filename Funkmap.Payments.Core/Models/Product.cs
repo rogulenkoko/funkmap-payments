@@ -21,5 +21,7 @@ namespace Funkmap.Payments.Core.Models
     public enum SubscribtionPeriod
     {
         Monthly = 1,
+        Daily = 2,
+        Yearly
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace Funkmap.Payments.Core.Abstract
 {
@@ -7,10 +6,8 @@ namespace Funkmap.Payments.Core.Abstract
     {
         IProductRepository ProductRepository { get; }
 
-        IOrderRepository OrderRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
 
-        IUserRepository UserRepository { get; }
-
-        IDbTransaction BeginTransaction();
+        IFunkmapTransaction BeginTransaction();
     }
 }

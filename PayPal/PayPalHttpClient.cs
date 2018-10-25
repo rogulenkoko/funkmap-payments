@@ -21,7 +21,7 @@ namespace PayPal
         public PayPalHttpClient(PayPalConfigurationProvider configurationProvider)
         {
             _configurationProvider = configurationProvider;
-            _http = new HttpClient()
+            _http = new HttpClient
             {
                 BaseAddress = new Uri(_configurationProvider.PayPalUrl),
                 Timeout = TimeSpan.FromSeconds(30)

@@ -9,7 +9,7 @@ namespace Funkmap.Payments.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Language { get; set; }
-        
+
         [Required]
         public string ProductName { get; set; }
         public string Name { get; set; }

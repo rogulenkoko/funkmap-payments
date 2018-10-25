@@ -20,7 +20,7 @@ namespace Funkmap.Payments.Tests.Products
             var options = new DbContextOptionsBuilder<PaymentsContext>()
                 .UseInMemoryDatabase("products_locale_test")
                 .Options;
-            Seed(options);
+            DataSeeder.Seed(options);
             var context = new PaymentsContext(options);
             context.Database.EnsureCreated();
             _productRepository = new ProductRepository(context);
@@ -32,6 +32,11 @@ namespace Funkmap.Payments.Tests.Products
             //default
             var allProducts = await _productRepository.GetAllAsync();
             Assert.NotEmpty(allProducts);
+
+            //unknown
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("es-MX");
+            var allProductKnown = await _productRepository.GetAllAsync();
+            Assert.NotEmpty(allProductKnown);
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             var allProductsEn = await _productRepository.GetAllAsync();
@@ -59,16 +64,6 @@ namespace Funkmap.Payments.Tests.Products
 
                 Assert.NotEqual(productRu.Currency, String.Empty);
                 Assert.NotEqual(product.Currency, productRu.Currency);
-            }
-        }
-
-        private void Seed(DbContextOptions<PaymentsContext> options)
-        {
-            using (var context = new PaymentsContext(options))
-            {
-                context.ProductLocales.AddRange(PaymentsStaticDatProdiver.ProductLocales);
-                context.Products.AddRange(PaymentsStaticDatProdiver.Products);
-                context.SaveChanges();
             }
         }
     }
