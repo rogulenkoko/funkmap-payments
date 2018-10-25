@@ -10,5 +10,11 @@ namespace PayPal.Abstract
         Task ExecutePaymentAsync(PayPalExecutePayment payment);
 
         Task CreatePlanAsync(PayPalPlan plan);
+
+        Task ActivatePlanAsync(PayPalPlan plan);
+
+        Task<PayPalAgreementResult> CreateAgreementAsync(PayPalAgreement agreement);
+
+        Task ExecuteAgreementAsync(string token);
     }
 }

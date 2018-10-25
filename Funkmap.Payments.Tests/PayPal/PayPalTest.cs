@@ -42,19 +42,36 @@ namespace Funkmap.Payments.Tests.PayPal
         }
 
         [Fact]
-        public async Task CreatePlan()
+        public async Task CreateSubscription()
         {
             var plan = new PayPalPlan
             {
                 Currency = "RUB",
-                Total = 100.00m,
-                Name = "pro_account",
+                Total = 100m,
+                Name = "Basic annual subscription",
                 PeriodType = PeriodType.Month,
-                Description = "Pro account description",
+                Description = "Annual subscription plan (Russia 100r.)",
                 Frequency = 1
             };
 
             await _payPalService.CreatePlanAsync(plan);
+            await _payPalService.ActivatePlanAsync(plan);
+
+
+            var agreement = new PayPalAgreement
+            {
+                Name = "Bandmap pro-account",
+                Description = "Annual subscription giving special features to the user on the Bandmap service",
+                PayPalPlanId = plan.Id
+            };
+            var agreementResult = await _payPalService.CreateAgreementAsync(agreement);
+        }
+
+        [Fact]
+        public async Task ExecuteAgreement()
+        {
+            var token = "EC-77U794285N940942N";
+            await _payPalService.ExecuteAgreementAsync(token);
         }
     }
 }

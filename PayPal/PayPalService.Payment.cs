@@ -37,7 +37,7 @@ namespace PayPal
                     {
                         Amount = new PayPalAmount
                         {
-                            Total = payment.Total.ToString(CultureInfo.InvariantCulture),
+                            Total = payment.Total,
                             Currency = payment.Currency
                         }
                     },

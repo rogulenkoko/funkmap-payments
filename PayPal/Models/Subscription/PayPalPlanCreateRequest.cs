@@ -35,7 +35,7 @@ namespace PayPal.Models.Subscription
         public string FrequencyInterval { get; set; }
 
         [JsonProperty("amount")]
-        public PayPalAmount Amount { get; set; }
+        public PayPalPlanAmount Amount { get; set; }
 
         [JsonProperty("cycles")]
         public string Cycles { get; set; }
@@ -60,6 +60,9 @@ namespace PayPal.Models.Subscription
 
         [JsonProperty("auto_bill_amount")]
         public string AutoBillAmount { get; set; }
+
+        [JsonProperty("setup_fee")]
+        public PayPalPlanAmount SetupFee { get; set; }
     }
 
     internal class PayPalChargeModel
@@ -68,6 +71,6 @@ namespace PayPal.Models.Subscription
         public string Type { get; set; }
 
         [JsonProperty("amount")]
-        public PayPalAmount Amount { get; set; }
+        public PayPalPlanAmount Amount { get; set; }
     }
 }

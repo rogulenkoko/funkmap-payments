@@ -2,9 +2,9 @@
 
 namespace Funkmap.Payments.Contracts.Events
 {
-    public class ProAccountConfirmedEvent
+    public class PriorityMarkerConfirmedEvent
     {
-        public string Login { get; set; }
+        public string ProfileLogin { get; set; }
 
         public DateTime ExpireAtUtc { get; set; }
     }
