@@ -13,8 +13,8 @@ namespace Funkmap.Payments.Data.Module
         {
             services.AddDbContext<PaymentsContext>(options =>
             {
-                //options.UseNpgsql(configuration["Database:Connection"]);
-                options.UseSqlServer(configuration["Database:Connection"]);
+                options.UseNpgsql(configuration["Database:Connection"]);
+                //options.UseSqlServer(configuration["Database:Connection"]);
             });
         }
 
@@ -23,6 +23,9 @@ namespace Funkmap.Payments.Data.Module
             builder.RegisterType<PaymentRepository>().As<IPaymentRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerLifetimeScope();
             builder.RegisterType<PayPalPlanRepository>().As<IPayPalPlanRepository>().InstancePerLifetimeScope();
+
+            builder.RegisterType<PaymentsUnitOfWork>().As<IPaymentsUnitOfWork>().InstancePerLifetimeScope()
+                .OnRelease(x => x.Dispose());
         }
     }
 }

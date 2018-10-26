@@ -85,7 +85,7 @@ namespace Funkmap.Payments
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseCors(builder =>
             {
                 builder.AllowAnyHeader()

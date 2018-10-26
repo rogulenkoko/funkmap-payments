@@ -17,7 +17,7 @@ namespace Funkmap.Payments.Tests.Payments
     public class PaymentsServiceTest
     {
         private readonly IPaymentsService _paymentsService;
-        private readonly IProductRepository _productRepository;
+        private readonly IPaymentsUnitOfWork _unitOfWork;
 
         public PaymentsServiceTest()
         {
@@ -32,15 +32,15 @@ namespace Funkmap.Payments.Tests.Payments
                 .Options;
             var context = new PaymentsContext(options);
             DataSeeder.Seed(options);
-            _productRepository = new ProductRepository(context);
-            _paymentsService = new PaymentsService(payPalService, _productRepository, new PayPalPlanRepository(context));
+            _unitOfWork = new PaymentsUnitOfWork(context);
+            _paymentsService = new PaymentsService(payPalService, _unitOfWork);
         }
 
 
         [Fact]
         public async Task GetPayPalPlanTest()
         {
-            var allProducts = await _productRepository.GetAllAsync();
+            var allProducts = await _unitOfWork.ProductRepository.GetAllAsync();
             foreach (var product in allProducts)
             {
                 var plan = await _paymentsService.GetOrCreatePayPalPlanIdAsync(product.Id);

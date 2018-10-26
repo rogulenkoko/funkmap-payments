@@ -31,19 +31,6 @@ namespace Funkmap.Payments.Data.Repositories
             return await products.ToListAsync();
         }
 
-        public async Task<string> GetPlanIdAsync(string productName)
-        {
-            var query = Context.Products.Include(x => x.ProductLocales)
-                .Where(x => x.Name == productName);
-            var payPalPlanId = await query.GetTranslatedProducts()
-                .Join(Context.PayPalPlans,
-                    product => product.Locale.Id,
-                    plan => plan.ProductLocaleId,
-                    (product, plan) => plan.Id)
-                .SingleOrDefaultAsync();
-            return payPalPlanId;
-        }
-
         private IQueryable<Product> GetTranslatedProducts(IQueryable<ProductEntity> query)
         {
             return query.GetTranslatedProducts()

@@ -4,7 +4,7 @@ using Funkmap.Payments.Core.Models;
 
 namespace Funkmap.Payments.Core.Abstract
 {
-    public interface IPaymentRepository : IRepositoryBase
+    public interface IPaymentRepository
     {
         Task CreateAsync(Payment payment);
 

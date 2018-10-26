@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Funkmap.Payments.Core.Abstract
 {
@@ -8,6 +9,10 @@ namespace Funkmap.Payments.Core.Abstract
 
         IPaymentRepository PaymentRepository { get; }
 
+        IPayPalPlanRepository PayPalPlanRepository { get; }
+
         IFunkmapTransaction BeginTransaction();
+
+        Task SaveAsync();
     }
 }

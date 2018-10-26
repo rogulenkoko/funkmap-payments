@@ -1,6 +1,6 @@
-﻿using Funkmap.Payments.Core.Abstract;
+﻿using System.Threading.Tasks;
+using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Data.Repositories;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Funkmap.Payments.Data
 {
@@ -13,15 +13,24 @@ namespace Funkmap.Payments.Data
             _context = context;
             ProductRepository = new ProductRepository(context);
             PaymentRepository = new PaymentRepository(context);
+            PayPalPlanRepository = new PayPalPlanRepository(context);
         }
 
         public IProductRepository ProductRepository { get; }
         public IPaymentRepository PaymentRepository { get; }
+        public IPayPalPlanRepository PayPalPlanRepository { get; }
+
         public IFunkmapTransaction BeginTransaction()
         {
             var transaction = _context.Database.BeginTransaction();
             return new FunkmapTransaction(transaction);
         }
+
+        public Task SaveAsync()
+        {
+            return _context.SaveChangesAsync();
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

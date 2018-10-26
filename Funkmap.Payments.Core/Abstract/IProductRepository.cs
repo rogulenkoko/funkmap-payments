@@ -9,7 +9,5 @@ namespace Funkmap.Payments.Core.Abstract
         Task<List<Product>> GetAllAsync();
 
         Task<Product> GetAsync(string productName);
-
-        Task<string> GetPlanIdAsync(string productName);
     }
 }

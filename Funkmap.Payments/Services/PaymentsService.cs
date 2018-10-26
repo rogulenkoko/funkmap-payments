@@ -11,22 +11,20 @@ namespace Funkmap.Payments.Services
     public class PaymentsService : IPaymentsService
     {
         private readonly IPayPalService _payPalService;
-        private readonly IProductRepository _productRepository;
-        private readonly IPayPalPlanRepository _payPalPlanRepository;
+        private readonly IPaymentsUnitOfWork _paymentsUnitOfWork;
 
-        public PaymentsService(IPayPalService payPalService, IProductRepository productRepository, IPayPalPlanRepository payPalPlanRepository)
+        public PaymentsService(IPayPalService payPalService, IPaymentsUnitOfWork paymentsUnitOfWork)
         {
             _payPalService = payPalService;
-            _productRepository = productRepository;
-            _payPalPlanRepository = payPalPlanRepository;
+            _paymentsUnitOfWork = paymentsUnitOfWork;
         }
 
         public async Task<string> GetOrCreatePayPalPlanIdAsync(string productName)
         {
-            var planId = await _productRepository.GetPlanIdAsync(productName);
+            var planId = await _paymentsUnitOfWork.PayPalPlanRepository.GetPlanIdAsync(productName);
             if (!string.IsNullOrEmpty(planId)) return planId;
 
-            var product = await _productRepository.GetAsync(productName);
+            var product = await _paymentsUnitOfWork.ProductRepository.GetAsync(productName);
             var payPalPlan = new PayPalPlan
             {
                 Name = product.Name,
@@ -44,7 +42,8 @@ namespace Funkmap.Payments.Services
                 Id = payPalPlan.Id,
                 ProductName = productName,
             };
-            await _payPalPlanRepository.CreateAsync(plan);
+            await _paymentsUnitOfWork.PayPalPlanRepository.CreateAsync(plan);
+            await _paymentsUnitOfWork.SaveAsync();
 
             return payPalPlan.Id;
         }

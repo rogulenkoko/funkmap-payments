@@ -57,7 +57,7 @@ namespace PayPal
                     SetupFee = new PayPalPlanAmount
                     {
                         Currency = plan.Currency,
-                        Total = Decimal.Multiply(plan.Total, 0.01m),
+                        Total = 1,
                     }
                 }
             };

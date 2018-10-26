@@ -17,18 +17,15 @@ namespace Funkmap.Payments.Controllers
     public class PayPalPaymentsController : Controller
     {
         private readonly IPayPalService _payPalService;
-        private readonly IPaymentRepository _paymentRepository;
-        private readonly IProductRepository _productRepository;
         private readonly IPaymentsService _paymentsService;
+        private readonly IPaymentsUnitOfWork _paymentsUnitOfWork;
 
-        public PayPalPaymentsController(IPayPalService payPalService, 
-                                        IPaymentRepository paymentRepository,
-                                        IProductRepository productRepository,
+        public PayPalPaymentsController(IPayPalService payPalService,
+                                        IPaymentsUnitOfWork paymentsUnitOfWork,
                                         IPaymentsService paymentsService)
         {
             _payPalService = payPalService;
-            _paymentRepository = paymentRepository;
-            _productRepository = productRepository;
+            _paymentsUnitOfWork = paymentsUnitOfWork;
             _paymentsService = paymentsService;
         }
 
@@ -61,8 +58,8 @@ namespace Funkmap.Payments.Controllers
                 PaymentStatus = PaymentStatus.Created
             };
 
-            await _paymentRepository.CreateAsync(donation);
-            await _paymentRepository.SaveAsync();
+            await _paymentsUnitOfWork.PaymentRepository.CreateAsync(donation);
+            await _paymentsUnitOfWork.SaveAsync();
 
             return Ok(response);
         }
@@ -76,7 +73,7 @@ namespace Funkmap.Payments.Controllers
         [Route("subscription")]
         public async Task<IActionResult> CreateSubscription(string productId)
         {
-            var product = await _productRepository.GetAsync(productId);
+            var product = await _paymentsUnitOfWork.ProductRepository.GetAsync(productId);
             var payPlanId = await _paymentsService.GetOrCreatePayPalPlanIdAsync(productId);
             var agreement = new PayPalAgreement
             {
@@ -100,10 +97,10 @@ namespace Funkmap.Payments.Controllers
             var execute = new PayPalExecutePayment { PayerId = payerId, PaymentId = paymentId};
             await _payPalService.ExecutePaymentAsync(execute);
 
-            var payment = await _paymentRepository.GetPayments().Where(x => x.ExternalId == paymentId).SingleOrDefaultAsync();
+            var payment = await _paymentsUnitOfWork.PaymentRepository.GetPayments().Where(x => x.ExternalId == paymentId).SingleOrDefaultAsync();
             payment.PaymentStatus = PaymentStatus.Executed;
-            _paymentRepository.Update(payment);
-            await _paymentRepository.SaveAsync();
+            _paymentsUnitOfWork.PaymentRepository.Update(payment);
+            await _paymentsUnitOfWork.SaveAsync();
             //todo show success page
             return Ok();
         }
