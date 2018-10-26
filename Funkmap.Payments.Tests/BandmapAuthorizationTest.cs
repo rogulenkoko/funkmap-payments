@@ -32,7 +32,7 @@ namespace Funkmap.Payments.Tests
         [Fact]
         public void AuthTest()
         {
-            var response = _client.PostAsync("/api/fake", null).GetAwaiter().GetResult();
+            var response = _client.PostAsync("/api/product", null).GetAwaiter().GetResult();
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
 
             var bandmapApiUrl = _configuration["Auth:BandmapTokenUrl"];

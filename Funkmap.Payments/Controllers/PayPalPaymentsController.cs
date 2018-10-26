@@ -32,6 +32,10 @@ namespace Funkmap.Payments.Controllers
             _paymentsService = paymentsService;
         }
 
+        /// <summary>
+        /// Create donation to Bandmap service
+        /// </summary>
+        /// <param name="request">Donation request model</param>
         [HttpPost]
         [Route("donation")]
         [AllowAnonymous]
@@ -63,6 +67,11 @@ namespace Funkmap.Payments.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Subscribe to Bandmap features
+        /// </summary>
+        /// <param name="productId">Product id</param>
         [HttpPost]
         [Route("subscription")]
         public async Task<IActionResult> CreateSubscription(string productId)
@@ -79,6 +88,10 @@ namespace Funkmap.Payments.Controllers
             return Ok(agreementResponse);
         }
 
+
+        /// <summary>
+        /// Paypal return URL (DO NOT CALL IT)
+        /// </summary>
         [HttpGet]
         [Route("confirm")]
         [AllowAnonymous]
@@ -95,6 +108,9 @@ namespace Funkmap.Payments.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Paypal cancel URL (DO NOT CALL IT)
+        /// </summary>
         [HttpGet]
         [Route("cancel")]
         [AllowAnonymous]

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Funkmap.Payments.Controllers
 {
     [Route("api/product")]
-    //[Authorize]
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -16,6 +16,12 @@ namespace Funkmap.Payments.Controllers
             _productRepository = productRepository;
         }
 
+        /// <summary>
+        /// Get all products and it's description (in specific locale)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("")]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productRepository.GetAllAsync();

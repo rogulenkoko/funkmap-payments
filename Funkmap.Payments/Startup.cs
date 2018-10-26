@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Autofac;
 using Funkmap.Payments.Core;
 using Funkmap.Payments.Options;
@@ -11,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Funkmap.Payments.Data.Module;
 using Funkmap.Payments.Tools;
 using PayPal;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Funkmap.Payments
 {
@@ -49,12 +52,28 @@ namespace Funkmap.Payments
             services.AddDataServices(Configuration);
             services.AddCors();
             services.AddMvc();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "Funkmap Payments API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Flow = "password",
+                    TokenUrl = authOptions.TokenUrl
+                });
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterPayPalServices(Configuration);
             builder.RegisterDataServices();
+            builder.RegisterDomainServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +89,14 @@ namespace Funkmap.Payments
                 builder.AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Funkmap API");
+                c.RoutePrefix = string.Empty;
             });
 
             app.Use(next =>

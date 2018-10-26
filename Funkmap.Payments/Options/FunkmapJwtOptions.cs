@@ -15,5 +15,7 @@ namespace Funkmap.Payments.Options
         public string Audience => _configuration["Auth:Audience"];
 
         public string Key => _configuration["Auth:Key"];
+
+        public string TokenUrl => _configuration["Auth:BandmapTokenUrl"];
     }
 }

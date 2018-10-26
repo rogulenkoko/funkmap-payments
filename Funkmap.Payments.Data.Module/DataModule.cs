@@ -22,6 +22,7 @@ namespace Funkmap.Payments.Data.Module
         {
             builder.RegisterType<PaymentRepository>().As<IPaymentRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<PayPalPlanRepository>().As<IPayPalPlanRepository>().InstancePerLifetimeScope();
         }
     }
 }
