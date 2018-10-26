@@ -31,7 +31,7 @@ namespace Funkmap.Payments
         public void ConfigureServices(IServiceCollection services)
         {
             var authOptions = new FunkmapJwtOptions(Configuration);
-
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -61,11 +61,13 @@ namespace Funkmap.Payments
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
 
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                options.AddSecurityDefinition("Bearer", new OAuth2Scheme
                 {
                     Flow = "password",
-                    TokenUrl = authOptions.TokenUrl
+                    TokenUrl = authOptions.TokenUrl,
                 });
+
+                options.DocumentFilter<OAuthDocumentFilter>();
             });
         }
 

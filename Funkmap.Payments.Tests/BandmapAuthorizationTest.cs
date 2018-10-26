@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +25,7 @@ namespace Funkmap.Payments.Tests
 
             var server = new TestServer(new WebHostBuilder()
                 .UseStartup<Startup>()
+                .ConfigureServices(x => x.AddAutofac())
                 .UseConfiguration(_configuration)
             );
             _client = server.CreateClient();
@@ -30,9 +33,9 @@ namespace Funkmap.Payments.Tests
 
 
         [Fact]
-        public void AuthTest()
+        public async Task AuthTest()
         {
-            var response = _client.PostAsync("/api/product", null).GetAwaiter().GetResult();
+            var response = await _client.GetAsync("/api/product");
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
 
             var bandmapApiUrl = _configuration["Auth:BandmapTokenUrl"];
@@ -57,22 +60,22 @@ namespace Funkmap.Payments.Tests
                     RequestUri = new Uri(bandmapApiUrl)
                 };
 
-                HttpResponseMessage loginResponse = httpClient.SendAsync(request).GetAwaiter().GetResult();
+                HttpResponseMessage loginResponse = await httpClient.SendAsync(request);
                 Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
 
-                var contentJson = loginResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var contentJson = await loginResponse.Content.ReadAsStringAsync();
                 token = JObject.Parse(contentJson).SelectToken("access_token").ToString();
                 Assert.NotEmpty(token);
             }
 
             var requestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri("/api/fake", UriKind.Relative),
+                RequestUri = new Uri("/api/product", UriKind.Relative),
                 Headers = { { "Authorization", $"Bearer {token}" } },
-                Method = HttpMethod.Post
+                Method = HttpMethod.Get
             };
 
-            response = _client.SendAsync(requestMessage).GetAwaiter().GetResult();
+            response = await _client.SendAsync(requestMessage);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
