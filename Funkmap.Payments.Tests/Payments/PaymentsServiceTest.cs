@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Funkmap.Payments.Core.Abstract;
+using Funkmap.Payments.Core.Parameters;
 using Funkmap.Payments.Data;
-using Funkmap.Payments.Data.Repositories;
 using Funkmap.Payments.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +41,13 @@ namespace Funkmap.Payments.Tests.Payments
             var allProducts = await _unitOfWork.ProductRepository.GetAllAsync();
             foreach (var product in allProducts)
             {
-                var plan = await _paymentsService.GetOrCreatePayPalPlanIdAsync(product.Id);
+                var parameter = new CreatePlanParameter()
+                {
+                    ProductName = product.Name,
+                    ReturnUrl = "http://localhost:1234",
+                    CancelUrl = "http://localhost:1234",
+                };
+                var plan = await _paymentsService.GetOrCreatePayPalPlanIdAsync(parameter);
                 Assert.NotEqual(plan, String.Empty);
             }
         }

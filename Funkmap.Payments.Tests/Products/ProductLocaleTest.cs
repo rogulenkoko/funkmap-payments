@@ -48,16 +48,16 @@ namespace Funkmap.Payments.Tests.Products
 
             foreach (var product in allProducts)
             {
-                var productEn = allProductsEn.Single(x => x.Id == product.Id);
-                var productRu = allProductsRu.Single(x => x.Id == product.Id);
+                var productEn = allProductsEn.Single(x => x.Name == product.Name);
+                var productRu = allProductsRu.Single(x => x.Name == product.Name);
 
-                Assert.Equal(product.Name, productEn.Name);
+                Assert.Equal(product.Title, productEn.Title);
                 Assert.Equal(product.Description, productEn.Description);
                 Assert.Equal(product.Currency, productEn.Currency);
                 Assert.Equal(product.Price, productEn.Price);
 
-                Assert.NotEqual(productRu.Name, String.Empty);
-                Assert.NotEqual(product.Name, productRu.Name);
+                Assert.NotEqual(productRu.Title, String.Empty);
+                Assert.NotEqual(product.Title, productRu.Title);
 
                 Assert.NotEqual(productRu.Description, String.Empty);
                 Assert.NotEqual(product.Description, productRu.Description);

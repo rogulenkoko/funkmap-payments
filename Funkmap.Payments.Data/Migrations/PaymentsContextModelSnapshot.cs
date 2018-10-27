@@ -3,8 +3,8 @@ using System;
 using Funkmap.Payments.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Funkmap.Payments.Data.Migrations
 {
@@ -15,14 +15,15 @@ namespace Funkmap.Payments.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Funkmap.Payments.Data.Entities.PaymentEntity", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Currency")
                         .IsRequired();
@@ -80,7 +81,8 @@ namespace Funkmap.Payments.Data.Migrations
             modelBuilder.Entity("Funkmap.Payments.Data.Entities.ProductLocaleEntity", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Currency");
 
@@ -90,10 +92,10 @@ namespace Funkmap.Payments.Data.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<decimal>("Price");
+
                     b.Property<string>("ProductName")
                         .IsRequired();
-
-                    b.Property<decimal>("Total");
 
                     b.HasKey("Id");
 
@@ -102,11 +104,36 @@ namespace Funkmap.Payments.Data.Migrations
                     b.ToTable("ProductLocales");
 
                     b.HasData(
-                        new { Id = 1L, Currency = "RUB", Description = "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", Language = "ru-RU", Name = "Pro-аккаунт", ProductName = "pro_account", Total = 300m },
-                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en-US", Name = "Pro-account", ProductName = "pro_account", Total = 5m },
-                        new { Id = 3L, Currency = "RUB", Description = "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.", Language = "ru-RU", Name = "Приоритетный профиль", ProductName = "priority_profile", Total = 300m },
-                        new { Id = 4L, Currency = "USD", Description = "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.", Language = "en-US", Name = "Priority profile", ProductName = "priority_profile", Total = 5m }
+                        new { Id = 1L, Currency = "RUB", Description = "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям).", Language = "ru-RU", Name = "Pro-аккаунт", Price = 300m, ProductName = "pro_account" },
+                        new { Id = 2L, Currency = "USD", Description = "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles).", Language = "en-US", Name = "Pro-account", Price = 5m, ProductName = "pro_account" },
+                        new { Id = 3L, Currency = "RUB", Description = "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.", Language = "ru-RU", Name = "Приоритетный профиль", Price = 300m, ProductName = "priority_profile" },
+                        new { Id = 4L, Currency = "USD", Description = "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.", Language = "en-US", Name = "Priority profile", Price = 5m, ProductName = "priority_profile" }
                     );
+                });
+
+            modelBuilder.Entity("Funkmap.Payments.Data.Entities.SubscriptionEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Currency");
+
+                    b.Property<string>("InfluencedLogin");
+
+                    b.Property<string>("PayPalAgreementId");
+
+                    b.Property<decimal>("PricePerPeriod");
+
+                    b.Property<string>("ProductName");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductName");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Funkmap.Payments.Data.Entities.PayPalPlanEntity", b =>
@@ -123,6 +150,13 @@ namespace Funkmap.Payments.Data.Migrations
                         .WithMany("ProductLocales")
                         .HasForeignKey("ProductName")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Funkmap.Payments.Data.Entities.SubscriptionEntity", b =>
+                {
+                    b.HasOne("Funkmap.Payments.Data.Entities.ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductName");
                 });
 #pragma warning restore 612, 618
         }

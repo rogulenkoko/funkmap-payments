@@ -9,12 +9,12 @@ namespace Funkmap.Payments.Core.Models
         /// <summary>
         /// Unique product name
         /// </summary>
-        public string Id { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Translated product name
         /// </summary>
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Translated product description
@@ -34,7 +34,7 @@ namespace Funkmap.Payments.Core.Models
         /// <summary>
         /// Subscription period (Month, Day, Year)
         /// </summary>
-        public SubscribtionPeriod Period { get; set; }
+        public SubscriptionPeriod Period { get; set; }
 
         /// <summary>
         /// Payment type (subscription)
@@ -49,10 +49,13 @@ namespace Funkmap.Payments.Core.Models
 
     public enum PaymentType
     {
-        Subscribtion = 1,
+        /// <summary>
+        /// Subscription
+        /// </summary>
+        Subscription = 1,
     }
 
-    public enum SubscribtionPeriod
+    public enum SubscriptionPeriod
     {
         Monthly = 1,
         Daily = 2,

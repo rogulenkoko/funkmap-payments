@@ -1,25 +1,26 @@
-﻿using Funkmap.Payments.Core.Models;
+﻿using Funkmap.Payments.Core;
+using Funkmap.Payments.Core.Models;
 using Funkmap.Payments.Data.Entities;
 
 namespace Funkmap.Payments.Data.Tools
 {
-    public static class PaymentsStaticDatProdiver
+    public static class PaymentsStaticDataProdiver
     {
         public static ProductEntity[] Products => new ProductEntity[]
         {
             new ProductEntity
             {
-                Name = "pro_account",
-                PaymentType = PaymentType.Subscribtion,
+                Name = FunkmapPaymentConstants.ProAccount,
+                PaymentType = PaymentType.Subscription,
                 HasTrial = false,
-                Period = SubscribtionPeriod.Monthly
+                Period = SubscriptionPeriod.Monthly
             },
             new ProductEntity
             {
-                Name = "priority_profile",
-                PaymentType = PaymentType.Subscribtion,
+                Name = FunkmapPaymentConstants.PriorityProfile,
+                PaymentType = PaymentType.Subscription,
                 HasTrial = false,
-                Period = SubscribtionPeriod.Monthly,
+                Period = SubscriptionPeriod.Monthly,
             }, 
         };
 
@@ -30,22 +31,22 @@ namespace Funkmap.Payments.Data.Tools
             new ProductLocaleEntity
             {
                 Id = 1,
-                ProductName = "pro_account",
+                ProductName = FunkmapPaymentConstants.ProAccount,
                 Currency = "RUB",
                 Name = "Pro-аккаунт",
                 Language = "ru-RU",
-                Total = 300,
+                Price = 300,
                 Description =
                     "Предоставляет возможность создания более 1 профиля. Применятеся к пользователю ресурса (не к его профилям)."
             },
             new ProductLocaleEntity
             {
                 Id = 2,
-                ProductName = "pro_account",
+                ProductName = FunkmapPaymentConstants.ProAccount,
                 Currency = "USD",
                 Name = "Pro-account",
                 Language = "en-US",
-                Total = 5,
+                Price = 5,
                 Description =
                     "Provides the ability to create more than 1 profile. Apply to the resource user (not to his profiles)."
             },
@@ -57,23 +58,23 @@ namespace Funkmap.Payments.Data.Tools
             new ProductLocaleEntity()
             {
                 Id = 3,
-                ProductName = "priority_profile",
+                ProductName = FunkmapPaymentConstants.PriorityProfile,
                 Name = "Приоритетный профиль",
                 Description = "Позволяет выделять один из ваших профилей на карте Bandmap и выдавать одним из первых в поисковых запросах.",
                 Currency = "RUB",
                 Language = "ru-RU",
-                Total = 300
+                Price = 300
             },
 
             new ProductLocaleEntity()
             {
                 Id = 4,
-                ProductName = "priority_profile",
+                ProductName = FunkmapPaymentConstants.PriorityProfile,
                 Name = "Priority profile",
                 Description = "Allows you to highlight one of your profiles on the Bandmap map and issue one of the first in search queries.",
                 Currency = "USD",
                 Language = "en-US",
-                Total = 5
+                Price = 5
             }, 
 
             #endregion

@@ -49,8 +49,8 @@ namespace PayPal
                 },
                 MerchantPreferences = new PayPalMerchantPreferences
                 {
-                    ReturnUrl = "http://localhost:6000/return",
-                    CancelUrl = "http://localhost:6000/cancel",
+                    ReturnUrl = plan.ReturnUrl,
+                    CancelUrl = plan.CancelUrl,
                     InitialFailAmountAction = "CONTINUE",
                     MaxFailAttempts = "3",
                     AutoBillAmount = "YES",
@@ -82,9 +82,9 @@ namespace PayPal
 
         public async Task ActivatePlanAsync(PayPalPlan plan)
         {
-            var payPalPatchModel = new PayPalPatchModel()
+            var payPalPatchModel = new PayPalPatchModel
             {
-                PayPalPatchValue = new PayPalPatchValue()
+                PayPalPatchValue = new PayPalPatchValue
                 {
                     State = "ACTIVE"
                 },
@@ -134,9 +134,17 @@ namespace PayPal
                 throw new PaypalException(createdAgreement.ErrorMessage, createdAgreement.ErrorDetailes.ToModels(), createdAgreement.InformationLink);
             }
 
+            var redirectUrl = createdAgreement.Links.SingleOrDefault(x => x.Rel == "approval_url")?.Href;
+
+            if (String.IsNullOrEmpty(redirectUrl))
+            {
+                throw new PaypalException("There is no redirect url.");
+            }
+
             return new PayPalAgreementResult
             {
-                RedirectUrl = createdAgreement.Links.SingleOrDefault(x => x.Rel == "approval_url")?.Href,
+                Id = redirectUrl.Split(new[] { "token=" }, StringSplitOptions.None).LastOrDefault(),
+                RedirectUrl = redirectUrl,
             };
         }
 

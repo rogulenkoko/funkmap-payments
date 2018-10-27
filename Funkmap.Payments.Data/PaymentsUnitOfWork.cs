@@ -14,11 +14,13 @@ namespace Funkmap.Payments.Data
             ProductRepository = new ProductRepository(context);
             PaymentRepository = new PaymentRepository(context);
             PayPalPlanRepository = new PayPalPlanRepository(context);
+            SubscriptionRepository = new SubscriptionRepository(context);
         }
 
         public IProductRepository ProductRepository { get; }
         public IPaymentRepository PaymentRepository { get; }
         public IPayPalPlanRepository PayPalPlanRepository { get; }
+        public ISubscriptionRepository SubscriptionRepository { get; }
 
         public IFunkmapTransaction BeginTransaction()
         {

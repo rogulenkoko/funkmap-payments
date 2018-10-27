@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
@@ -36,12 +34,12 @@ namespace Funkmap.Payments.Data.Repositories
             return query.GetTranslatedProducts()
                 .Select(x => new Product
                 {
-                    Id = x.Product.Name,
-                    Name = x.Locale.Name,
+                    Name = x.Product.Name,
+                    Title = x.Locale.Name,
                     Description = x.Locale.Description,
                     Currency = x.Locale.Currency,
                     PaymentType = x.Product.PaymentType,
-                    Price = x.Locale.Total,
+                    Price = x.Locale.Price,
                     Period = x.Product.Period,
                     HasTrial = x.Product.HasTrial
                 });

@@ -12,7 +12,7 @@ namespace Funkmap.Payments.Models
         public Currency Currency { get; set; }
 
         /// <summary>
-        /// Total value
+        /// Price value
         /// </summary>
         public decimal Total { get; set; }
     }

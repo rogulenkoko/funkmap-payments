@@ -76,6 +76,7 @@ namespace Funkmap.Payments
             builder.RegisterPayPalServices(Configuration);
             builder.RegisterDataServices();
             builder.RegisterDomainServices();
+            builder.RegisterRedisServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

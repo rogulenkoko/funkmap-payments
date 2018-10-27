@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Funkmap.Payments.Core.Parameters;
 
 namespace Funkmap.Payments.Core.Abstract
 {
     public interface IPaymentsService
     {
-        Task<string> GetOrCreatePayPalPlanIdAsync(string productName);
+        Task<string> GetOrCreatePayPalPlanIdAsync(CreatePlanParameter productName);
     }
 }

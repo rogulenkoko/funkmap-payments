@@ -8,7 +8,7 @@ namespace Funkmap.Payments.Data.Entities
     {
         [Key]
         public string Name { get; set; }
-        public SubscribtionPeriod Period { get; set; }
+        public SubscriptionPeriod Period { get; set; }
         public PaymentType PaymentType { get; set; }
         public bool HasTrial { get; set; }
         public virtual List<ProductLocaleEntity> ProductLocales { get; set; }

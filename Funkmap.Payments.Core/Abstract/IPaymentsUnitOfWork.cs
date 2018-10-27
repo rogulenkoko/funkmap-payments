@@ -11,6 +11,8 @@ namespace Funkmap.Payments.Core.Abstract
 
         IPayPalPlanRepository PayPalPlanRepository { get; }
 
+        ISubscriptionRepository SubscriptionRepository { get; }
+
         IFunkmapTransaction BeginTransaction();
 
         Task SaveAsync();

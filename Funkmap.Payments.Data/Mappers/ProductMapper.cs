@@ -13,7 +13,7 @@ namespace Funkmap.Payments.Data.Mappers
             if (source == null) return null;
             return new Product()
             {
-                Name = source.Name,
+                Title = source.Name,
                 //Description = source.
             };
         }

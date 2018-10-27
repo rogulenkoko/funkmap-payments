@@ -17,6 +17,7 @@ namespace Funkmap.Payments.Data
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<ProductLocaleEntity> ProductLocales { get; set; }
         public DbSet<PayPalPlanEntity> PayPalPlans { get; set; }
+        public DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,14 +26,18 @@ namespace Funkmap.Payments.Data
                 .WithMany(x => x.ProductLocales)
                 .HasForeignKey(x => x.ProductName);
 
-            modelBuilder.Entity<ProductEntity>().HasData(PaymentsStaticDatProdiver.Products);
-            modelBuilder.Entity<ProductLocaleEntity>().HasData(PaymentsStaticDatProdiver.ProductLocales);
+            modelBuilder.Entity<ProductEntity>().HasData(PaymentsStaticDataProdiver.Products);
+            modelBuilder.Entity<ProductLocaleEntity>().HasData(PaymentsStaticDataProdiver.ProductLocales);
 
             modelBuilder.Entity<PayPalPlanEntity>()
                 .HasOne<ProductLocaleEntity>()
                 .WithOne()
                 .HasForeignKey<PayPalPlanEntity>(x => x.ProductLocaleId);
 
+            modelBuilder.Entity<ProductEntity>()
+                .HasMany<SubscriptionEntity>()
+                .WithOne(x=>x.Product)
+                .HasForeignKey(x => x.ProductName);
         }
 
         public async Task SaveAsync()

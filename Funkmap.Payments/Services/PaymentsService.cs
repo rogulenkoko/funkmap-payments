@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Funkmap.Payments.Core.Abstract;
 using Funkmap.Payments.Core.Models;
+using Funkmap.Payments.Core.Parameters;
 using PayPal.Abstract;
 using PayPal.Contracts;
 using PayPalPlan = PayPal.Contracts.PayPalPlan;
@@ -19,20 +20,22 @@ namespace Funkmap.Payments.Services
             _paymentsUnitOfWork = paymentsUnitOfWork;
         }
 
-        public async Task<string> GetOrCreatePayPalPlanIdAsync(string productName)
+        public async Task<string> GetOrCreatePayPalPlanIdAsync(CreatePlanParameter parameter)
         {
-            var planId = await _paymentsUnitOfWork.PayPalPlanRepository.GetPlanIdAsync(productName);
+            var planId = await _paymentsUnitOfWork.PayPalPlanRepository.GetPlanIdAsync(parameter.ProductName);
             if (!string.IsNullOrEmpty(planId)) return planId;
 
-            var product = await _paymentsUnitOfWork.ProductRepository.GetAsync(productName);
+            var product = await _paymentsUnitOfWork.ProductRepository.GetAsync(parameter.ProductName);
             var payPalPlan = new PayPalPlan
             {
-                Name = product.Name,
+                Name = product.Title,
                 Description = product.Description,
                 Currency = product.Currency,
                 Frequency = 1,
                 PeriodType = ToPeriodType(product.Period),
                 Total = product.Price,
+                ReturnUrl = parameter.ReturnUrl,
+                CancelUrl = parameter.CancelUrl
             };
             await _payPalService.CreatePlanAsync(payPalPlan);
             await _payPalService.ActivatePlanAsync(payPalPlan);
@@ -40,7 +43,7 @@ namespace Funkmap.Payments.Services
             var plan = new Core.Models.PayPalPlan
             {
                 Id = payPalPlan.Id,
-                ProductName = productName,
+                ProductName = parameter.ProductName,
             };
             await _paymentsUnitOfWork.PayPalPlanRepository.CreateAsync(plan);
             await _paymentsUnitOfWork.SaveAsync();
@@ -48,17 +51,17 @@ namespace Funkmap.Payments.Services
             return payPalPlan.Id;
         }
 
-        private PeriodType ToPeriodType(SubscribtionPeriod periodType)
+        private PeriodType ToPeriodType(SubscriptionPeriod periodType)
         {
             switch (periodType)
             {
-                case SubscribtionPeriod.Monthly:
+                case SubscriptionPeriod.Monthly:
                     return PeriodType.Month;
-                case SubscribtionPeriod.Daily:
+                case SubscriptionPeriod.Daily:
                     return PeriodType.Day;
-                case SubscribtionPeriod.Yearly:
+                case SubscriptionPeriod.Yearly:
                     return PeriodType.Year;
-                default: throw new InvalidOperationException($"Can't convert {nameof(SubscribtionPeriod)} to {nameof(PeriodType)}");
+                default: throw new InvalidOperationException($"Can't convert {nameof(SubscriptionPeriod)} to {nameof(PeriodType)}");
 
             }
         }

@@ -10,8 +10,8 @@ namespace Funkmap.Payments.Tests
         {
             using (var context = new PaymentsContext(options))
             {
-                context.ProductLocales.AddRange(PaymentsStaticDatProdiver.ProductLocales);
-                context.Products.AddRange(PaymentsStaticDatProdiver.Products);
+                context.ProductLocales.AddRange(PaymentsStaticDataProdiver.ProductLocales);
+                context.Products.AddRange(PaymentsStaticDataProdiver.Products);
                 context.SaveChanges();
             }
         }

@@ -1,11 +1,12 @@
-﻿using System;
-
-namespace Funkmap.Payments.Contracts.Events
+﻿namespace Funkmap.Payments.Contracts.Events
 {
     public class ProAccountConfirmedEvent
     {
-        public string Login { get; set; }
+        public ProAccountConfirmedEvent(string login)
+        {
+            Login = login;
+        }
 
-        public DateTime ExpireAtUtc { get; set; }
+        public string Login { get; set; }
     }
 }

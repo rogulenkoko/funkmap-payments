@@ -51,7 +51,9 @@ namespace Funkmap.Payments.Tests.PayPal
                 Name = "Basic annual subscription",
                 PeriodType = PeriodType.Month,
                 Description = "Annual subscription plan (Russia 100r.)",
-                Frequency = 1
+                Frequency = 1,
+                CancelUrl = "http://localhost:1234",
+                ReturnUrl = "http://localhost:1234",
             };
 
             await _payPalService.CreatePlanAsync(plan);

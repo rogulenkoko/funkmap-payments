@@ -8,7 +8,7 @@ namespace Funkmap.Payments.Core
 
         public static IConfiguration Configuration
         {
-            get { return _configuration; }
+            get => _configuration;
             set
             {
                 if (_configuration == null) _configuration = value;
